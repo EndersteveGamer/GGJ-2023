@@ -4,8 +4,12 @@
 [ext_resource path="res://Scripts/CameraScript.gd" type="Script" id=2]
 
 [sub_resource type="OpenSimplexNoise" id=1]
+period = 17.7
+persistence = 0.495
 
 [sub_resource type="NoiseTexture" id=2]
+width = 2048
+height = 2048
 noise = SubResource( 1 )
 
 [node name="Game" type="Node2D"]
@@ -19,10 +23,10 @@ drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 smoothing_enabled = true
 smoothing_speed = 10.0
-drag_margin_left = 0.3
-drag_margin_top = 0.3
-drag_margin_right = 0.3
-drag_margin_bottom = 0.3
+drag_margin_left = 0.5
+drag_margin_top = 0.4
+drag_margin_right = 0.5
+drag_margin_bottom = 0.4
 editor_draw_drag_margin = true
 script = ExtResource( 2 )
 
