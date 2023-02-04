@@ -41,14 +41,18 @@ func grab():
 			uprooting=0.001
 			grabbed.texture=uproot.get_node("Sprite").texture
 			uproot.owner.remove_child(uproot)
+			add_child(uproot)
+			uproot.visible=false
 			owner.gridTake(uproot.index)
+			print("index is hopefully "+str(uproot.index))
 
 func plant():
 	if uproot!=null:
 		if index>=0 and index<owner.gridSize:
 			if not owner.gridHas(index):
+				uproot.visible=true
+				remove_child(uproot)
 				owner.add_child(uproot)
-				uproot.set_owner(owner)
 				print("planted to "+str(index))
 				owner.gridSet(index,uproot)
 				owner.gridStick(uproot)
@@ -104,17 +108,19 @@ func _physics_process(delta):
 #	pass
 
 func _on_Grab_area_entered(area):
-	if touched==null:
-		touched=area
-	else:
-		if second==null and area!=touched:
-			second=area
-	print(area.name)
+	if area.visible:
+		if touched==null:
+			touched=area
+		else:
+			if second==null and area!=touched:
+				second=area
+		print(area.name)
 
 func _on_Grab_area_exited(area):
-	if area==touched:
-		touched=second
-		second=null
-		return
-	if area==second:
-		second=null
+	if area.visible:
+		if area==touched:
+			touched=second
+			second=null
+			return
+		if area==second:
+			second=null
