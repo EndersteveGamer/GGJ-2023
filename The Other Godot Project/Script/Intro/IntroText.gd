@@ -3,8 +3,12 @@ extends Label
 export(float, 0, 10, 0.1) var displayTime : float = 1
 
 var texts : Array = ["Why are you even playing this",
-			"This was made in 48 hours",
-			"Screaming goat"]
+					"This was made in 48 hours",
+					"Screaming goat",
+					"AAAAAAAAAAAAH",
+					"Pixel art go brrrrr",
+					"You'll hate these plants",
+					"Trigger warning: stupid game"]
 var selectedText : String = ""
 
 func _ready():
