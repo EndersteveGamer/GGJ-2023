@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Sprite/Rooted Grass.png" type="Texture" id=1]
 [ext_resource path="res://Sprite/Plantier plant.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Script/Main Menu Camera.gd" type="Script" id=4]
 [ext_resource path="res://Script/Main Menu/Button.gd" type="Script" id=5]
 [ext_resource path="res://Fonts/HARLOWSI font.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Sound/Main Menu.mp3" type="AudioStream" id=7]
 
 [sub_resource type="TileSet" id=1]
 0/name = "Rooted Grass.png 0"
@@ -84,3 +85,7 @@ custom_fonts/font = ExtResource( 6 )
 text = "Uproad"
 align = 1
 valign = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+autoplay = true
