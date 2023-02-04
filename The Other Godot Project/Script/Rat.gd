@@ -128,6 +128,8 @@ func _on_Grab_area_entered(area):
 
 func _on_Grab_area_exited(area):
 	if area.visible:
+		if area.soil:
+			print("noice")
 		if area==touched:
 			touched=second
 			second=null
