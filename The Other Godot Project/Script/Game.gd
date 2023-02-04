@@ -54,7 +54,7 @@ func createPlant(x):
 		gridSet(x,newPlant)
 		newPlant.position.y+=32
 		print("index "+str(newPlant.index))
-		newPlant.audioManager=owner.get_node("AudioManager")
+		newPlant.audioManager=get_node("AudioManager")
 		return newPlant
 	return null
 
