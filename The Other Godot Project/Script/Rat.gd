@@ -6,10 +6,14 @@ export var deceleration=0.33
 var facing=false # false is facing right
 onready var sprite=get_node("Sprite")
 onready var grabbed=get_node("Grab").get_node("Grabbed")
+var audioManager=owner.get_node("AudioManager")
 
 var touched=null #the plant the rat touches right now
 var second=null #the second plant it touches
 var uproot=null #the plant the rat picked, if null the rat is empty handed
+var uprooting=0
+export var timeToUproot=0.5
+
 var index=0
 
 func _ready():
@@ -34,6 +38,7 @@ func grab():
 		else:
 			second=null
 		if uproot!=null:
+			uprooting=0.001
 			grabbed.texture=uproot.get_node("Sprite").texture
 			uproot.owner.remove_child(uproot)
 			owner.gridTake(uproot.index)
@@ -81,8 +86,18 @@ func touchCheck():
 		touched=second
 		second=null
 
+func playerUproot(delta):
+	uprooting+=delta
+	deltaSpeed.x*=deceleration
+	if uprooting>timeToUproot:
+		uprooting=0
+	move_and_slide(deltaSpeed)
+
 func _physics_process(delta):
-	playerMovement(delta)
+	if uprooting>0:
+		playerUproot(delta)
+	else:
+		playerMovement(delta)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

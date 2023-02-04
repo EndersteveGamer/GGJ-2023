@@ -11,7 +11,7 @@ var death=0
 var dying=false
 var decay=0
 var dead=false
-
+var audioManager
 # time in seconds
 export var timeToGrow=30
 export var timeToDecay=5
