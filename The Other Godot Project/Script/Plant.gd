@@ -18,6 +18,8 @@ export var timeToDecay=5
 export var timeToCry=2
 export var timeToDie=5
 
+var soundCry=preload("res://Sound/Scream.ogg")
+
 func _process(delta):
 	if not dead:
 		if not grown:
@@ -26,10 +28,12 @@ func _process(delta):
 				if growth>=timeToGrow:
 					grown=true
 			if index==-1:
+				print("out of earth")
 				if not crying:
 					cry+=delta
 					if cry>timeToCry:
 						crying=true
+						audioManager.play(soundCry,position)
 				else:
 					if not dying:
 						death+=delta
