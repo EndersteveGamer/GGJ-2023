@@ -7,13 +7,9 @@
 extents = Vector2( 32, 32 )
 
 [node name="Rat" type="KinematicBody2D"]
-position = Vector2( 0, 11 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, 6 )
-scale = Vector2( 4.625, 4.625 )
->>>>>>> 1e4ac31ee6691cb7b4f3ba546a397779e22892c2
 z_index = 1
 texture = ExtResource( 1 )
 
