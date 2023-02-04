@@ -179,11 +179,12 @@ func playerUproot(delta):
 	move_and_slide(deltaSpeed)
 
 func _physics_process(delta):
-	if uproot.dead:
-		remove_child(uproot)
-		uproot.queue_free()
-		grabbed.texture=null
-		uproot=null
+	if uproot!=null:
+		if uproot.dead:
+			remove_child(uproot)
+			uproot.queue_free()
+			grabbed.texture=null
+			uproot=null
 	if uprooting>0:
 		playerUproot(delta)
 	else:
