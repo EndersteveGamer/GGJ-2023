@@ -43,7 +43,7 @@ func _process(delta):
 					if (plant1 != null && plant1.growth < growth) || (plant2 != null && plant1.growth < growth):
 						growth += delta
 				if owner.grid[index].plantGetSinName() == "envy":
-					if (plant1 != null && plant1.growth > growth) || (plant2.growth != null && plant2.growth > growth):
+					if (plant1 != null && plant1.growth > growth) || (plant2 != null && plant2.growth > growth):
 						growth += delta
 				if growth>=timeToGrow:
 					grown=true
