@@ -1,3 +1,17 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Sprite/Rooted Grass.png" type="Texture" id=1]
 
 [node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+columns = 5
+
+[node name="RootedGrass" type="Sprite" parent="GridContainer"]
+position = Vector2( -458, -246 )
+scale = Vector2( 6.625, 6.625 )
+texture = ExtResource( 1 )
