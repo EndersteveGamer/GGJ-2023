@@ -6,7 +6,7 @@ export var deceleration=0.33
 var facing=false # false is facing right
 onready var sprite=get_node("Sprite")
 onready var grabbed=get_node("Grab").get_node("Grabbed")
-var audioManager=owner.get_node("AudioManager")
+onready var audioManager=owner.get_node("AudioManager")
 
 var touched=null #the plant the rat touches right now
 var second=null #the second plant it touches
