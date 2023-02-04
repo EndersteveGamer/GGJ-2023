@@ -53,9 +53,8 @@ func playerMovement(delta):
 	deltaSpeed.x=(deltaSpeed.x+directionInput.x*speed)*deceleration
 	if deltaSpeed.x>0.1:
 		facing=true
-	else:
-		if deltaSpeed.x<0.1:
-			facing=false
+	elif deltaSpeed.x<0.2:
+		facing=false
 	sprite.flip_h=!facing
 	if Input.get_action_strength("ui_up"):
 		grab()
