@@ -63,7 +63,26 @@ func grab():
 
 func plant():
 	if uproot!=null:
-		if index>=0 and index<owner.gridSize:
+		if uproot.grown:
+			print("planted grown")
+			if index==owner.start or index==owner.start+owner.tiles-1:
+				print("extreme")
+				uproot.queue_free()
+				if index==owner.start:
+					print("left")
+					owner.start-=1
+					owner.soilColor[owner.start]=uproot.color
+					owner.createSoil(owner.start)
+				else:
+					print("right")
+					owner.tiles+=1
+					owner.soilColor[owner.start+owner.tiles-1]=uproot.color
+					owner.createSoil(owner.start+owner.tiles-1)
+				uproot=null
+				grabbed.texture=null
+				owner.plantSpawnCurrent-=owner.plantSpawnDecrement
+				return
+		if index>=owner.start and index<=owner.start+owner.tiles:
 			if not owner.gridHas(index):
 				uproot.visible=true
 				remove_child(uproot)

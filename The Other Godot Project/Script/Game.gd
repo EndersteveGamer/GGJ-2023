@@ -11,6 +11,13 @@ onready var plant=preload("res://Scene/Plant.tscn")
 onready var soil=preload("res://Scene/Soil.tscn")
 
 onready var rng=RandomNumberGenerator.new()
+
+export var plantSpawndBase=20
+var plantSpawnCurrent=plantSpawndBase
+export var plantSpawnIncrement=1
+export var plantSpawnDecrement=1
+export var plantSpawnTimer=0
+
 var sinsIndex=[
 	"wrath",
 	"envy",
@@ -115,36 +122,48 @@ func createPlant(x):
 	return null
 
 func spawnPlantRandom():
-	var x=rng.randi()%gridSize
+	var x=rng.randi()%tiles+start
+	var threshold=100
+	var i=0
 	while gridHas(x):
 		x+=1
 		if x>gridSize:
 			x=0
-	return createPlant(x)
+		i+=1
+	if i<threshold:
+		return createPlant(x)
+	return null
+
+func createSoil(x):
+	var newSoil=soil.instance()
+	print("x is "+str(x))
+	print("soil is "+str(soilColor[x]))
+	newSoil.modulate=getSin(soilColor[x])["color"]
+	newSoil.modulate.a=0.5
+	newSoil.position.y=64
+	newSoil.scale.x=2
+	newSoil.scale.y=2
+	add_child(newSoil)
+	newSoil.position.x=gridToPoint(x)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	grid.resize(gridSize)
 	soilColor.resize(gridSize)
 	rng.randomize()
-	for i in range(gridSize/4):
-		createPlant(i*4)
-	pass # Replace with function body.
+	spawnPlantRandom() # Replace with function body.
 	var leftColor=[2,2,2,2,2,2,2]
 	for i in range(start,start+tiles):
 		soilColor[i]=rng.randi()%7
 		while leftColor[soilColor[i]]==0:
 			soilColor[i]=rng.randi()%7
 		leftColor[soilColor[i]]-=1
-		var newSoil=soil.instance()
-		newSoil.modulate=getSin(soilColor[i])["color"]
-		newSoil.modulate.a=0.5
-		newSoil.position.y=64
-		newSoil.scale.x=2
-		newSoil.scale.y=2
-		add_child(newSoil)
-		newSoil.position.x=gridToPoint(i)
+		createSoil(i)
 	get_node("TileMap").position.x+start*gridWidth
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	plantSpawnTimer+=delta
+	if plantSpawnTimer>plantSpawnCurrent:
+		spawnPlantRandom()
+		plantSpawnTimer-=plantSpawnCurrent
+		plantSpawnCurrent+=plantSpawnIncrement
