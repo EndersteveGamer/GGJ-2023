@@ -38,10 +38,6 @@ func plantGetCloser(grown=false):
 func grab():
 	if uproot==null:
 		uproot=plantGetCloser()
-		if touched==uproot:
-			touched=second
-		else:
-			second=null
 		if uproot!=null:
 			uprooting=0.001
 			grabbed.texture=plantGray
@@ -51,6 +47,10 @@ func grab():
 			uproot.visible=false
 			owner.gridTake(uproot.index)
 			uproot.soil=false
+			if touched==uproot:
+				touched=second
+			else:
+				second=null
 		else:
 			uproot=plantGetCloser(true)
 			if uproot!=null:
@@ -60,6 +60,10 @@ func grab():
 				add_child(uproot)
 				uproot.visible=false
 				owner.gridTake(uproot.index)
+				if touched==uproot:
+					touched=second
+				else:
+					second=null
 
 func plant():
 	if uproot!=null:
@@ -68,6 +72,7 @@ func plant():
 			if index==owner.start or index==owner.start+owner.tiles-1:
 				print("extreme")
 				uproot.queue_free()
+				owner.tiles+=1
 				if index==owner.start:
 					print("left")
 					owner.start-=1
@@ -75,12 +80,14 @@ func plant():
 					owner.createSoil(owner.start)
 				else:
 					print("right")
-					owner.tiles+=1
 					owner.soilColor[owner.start+owner.tiles-1]=uproot.color
 					owner.createSoil(owner.start+owner.tiles-1)
 				uproot=null
 				grabbed.texture=null
 				owner.plantSpawnCurrent-=owner.plantSpawnDecrement
+				if touched==uproot:
+					touched=second
+				second=null
 				return
 		if index>=owner.start and index<=owner.start+owner.tiles:
 			if not owner.gridHas(index):
@@ -95,6 +102,9 @@ func plant():
 				if owner.soilColor[uproot.index]==uproot.color:
 					uproot.soil=true
 				uproot=null
+				if touched==uproot:
+					touched=second
+				second=null
 
 func playerMovement(delta):
 	var directionInput = Vector2.ZERO
@@ -125,6 +135,8 @@ func playerMovement(delta):
 func touchCheck():
 	if touched==null and second!=null:
 		touched=second
+		second=null
+	else:
 		second=null
 
 func playerUproot(delta):
