@@ -6,6 +6,7 @@ export var deceleration=0.33
 var facing=false # false is facing right
 onready var sprite=get_node("Sprite")
 onready var grabbed=get_node("Grab").get_node("Grabbed")
+
 var touched=null #the plant the rat touches right now
 var second=null #the second plant it touches
 var uproot=null #the plant the rat picked, if null the rat is empty handed
