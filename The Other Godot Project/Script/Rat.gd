@@ -14,7 +14,7 @@ var uproot=null #the plant the rat picked, if null the rat is empty handed
 var uprooting=0
 export var timeToUproot=0.5
 
-var plantGray=preload()
+#var plantGray=preload('')
 
 var index=0
 

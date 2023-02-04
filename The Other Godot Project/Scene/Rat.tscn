@@ -8,9 +8,6 @@ extents = Vector2( 32, 32 )
 
 [node name="Rat" type="KinematicBody2D"]
 script = ExtResource( 2 )
-speed = null
-deceleration = null
-timeToUproot = null
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 1.42109e-14, 6 )
