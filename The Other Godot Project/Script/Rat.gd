@@ -56,12 +56,20 @@ func playerMovement(delta):
 	else:
 		if deltaSpeed.x<0.1:
 			facing=false
-	sprite.flip_h=facing
+	sprite.flip_h=!facing
 	if Input.get_action_strength("ui_up"):
 		grab()
 	else:
 		if Input.get_action_strength("ui_down"):
 			plant()
+			
+	# Move plant based on orientation
+	if facing:
+		grabbed.position.x = 41
+		grabbed.flip_h = true
+	else:
+		grabbed.position.x = -41
+		grabbed.flip_h = false
 	move_and_slide(deltaSpeed) # auto delta !
  
 func touchCheck():
