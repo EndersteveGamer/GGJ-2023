@@ -44,7 +44,7 @@ func plant():
 		print("planted to "+owner.name)
 		uproot.position=position
 		uproot.position.y+=32
-		owner.gridSet(owner.pointToGrid(uproot.position.x),uproot)
+		owner.gridStick(uproot)
 		uproot=null
 		grabbed.texture=null
 
