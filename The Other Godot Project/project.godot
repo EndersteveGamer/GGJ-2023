@@ -14,6 +14,10 @@ config/name="Uproad"
 run/main_scene="res://Scene/Intro/Intro.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+EndScreen="*res://Scene/End Screen.tscn"
+
 [display]
 
 window/stretch/mode="2d"

@@ -4,8 +4,8 @@ var grid=[]
 var soilColor=[]
 var gridSize=128 # number of case
 var gridWidth=64 # width of each case
-var startingTiles=14
-var victory=startingTiles+49
+var startingTiles : int =14
+var victory : int=startingTiles+0
 var tiles=startingTiles
 var start=(gridSize-startingTiles)/2
 onready var plant=preload("res://Scene/Plant.tscn")
@@ -18,6 +18,8 @@ var plantSpawnCurrent=plantSpawndBase
 export var plantSpawnIncrement=1
 export var plantSpawnDecrement=1
 export var plantSpawnTimer=0
+
+var timeTaken = 0
 
 var sinsIndex=[
 	"wrath",
@@ -82,6 +84,7 @@ func getPlantsNum():
 	for plant in grid:
 		if plant != null:
 			plantsNum += 1
+	return plantsNum
 
 func getSinColorCode(sI):
 	return getSin(sI)["color"]
@@ -186,10 +189,18 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	timeTaken += delta
 	plantSpawnTimer+=delta
 	if plantSpawnTimer>plantSpawnCurrent:
-		if getPlantsNum() <= tiles.startingTiles - 5:
+		if getPlantsNum() <= tiles - 5:
 			spawnPlantRandom()
 		plantSpawnTimer-=plantSpawnCurrent
 		plantSpawnCurrent *= 0.95
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
+		
+func endGame():
+	var endScreen = get_node("/root/EndScreen")
+	print(timeTaken)
+	endScreen.timeTaken = timeTaken
+	endScreen.isGameEnded = true
+	get_tree().change_scene("res://Scene/End Screen.tscn")
