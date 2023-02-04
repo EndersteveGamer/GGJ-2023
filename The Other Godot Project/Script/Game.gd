@@ -76,6 +76,12 @@ var sins={
 # get the sin data
 func getSin(sI):
 	return sins[sinsIndex[sI]]
+	
+func getPlantsNum():
+	var plantsNum : int = 0
+	for plant in grid:
+		if plant != null:
+			plantsNum += 1
 
 func getSinColorCode(sI):
 	return getSin(sI)["color"]
@@ -182,6 +188,8 @@ func _ready():
 func _process(delta):
 	plantSpawnTimer+=delta
 	if plantSpawnTimer>plantSpawnCurrent:
-		spawnPlantRandom()
+		if getPlantsNum() <= tiles.startingTiles - 5:
+			spawnPlantRandom()
 		plantSpawnTimer-=plantSpawnCurrent
-		plantSpawnCurrent+=plantSpawnIncrement
+		plantSpawnCurrent *= 0.95
+		if plantSpawnCurrent < 3: plantSpawnCurrent = 3

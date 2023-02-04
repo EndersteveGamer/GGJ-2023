@@ -91,7 +91,7 @@ func plant():
 								owner.grid[i].growth+2
 				uproot=null
 				grabbed.texture=null
-				owner.plantSpawnCurrent-=owner.plantSpawnDecrement
+				owner.plantSpawnCurrent+=owner.plantSpawnDecrement
 				if touched==uproot:
 					touched=second
 				second=null
