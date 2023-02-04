@@ -71,6 +71,8 @@ var sins={
 		"desc":"Grows faster if it's ahead of the other plants"
 	}
 }
+func plantGetSin(x):
+	return sins[sinsIndex[soilColor[x]]]
 
 func getSin(x):
 	return sins[sinsIndex[x]]

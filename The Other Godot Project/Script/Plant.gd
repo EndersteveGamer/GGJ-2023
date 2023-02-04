@@ -23,6 +23,9 @@ var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
 
 onready var fruit=get_node("Fruit")
 
+func plantGetSin():
+	return owner.getSin(index)
+
 func _process(delta):
 	if not dead:
 		if not grown:
@@ -32,6 +35,7 @@ func _process(delta):
 					grown=true
 					fruit.texture=fruitSprite
 					fruit.modulate=owner.getSin(color)["color"]
+					if plantGetSin()=="lust":
 			if index==-1:
 				if not crying:
 					cry+=delta

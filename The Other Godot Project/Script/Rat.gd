@@ -23,7 +23,7 @@ func _ready():
 	pass
 
 func plantGetSin(x):
-	return owner.sins[owner.sinsIndex[owner.soilColor[x]]]
+	return owner.getSin(x)
 
 func plantGetCloser(grown=false):
 	if touched!=null and touched.grown==grown:
