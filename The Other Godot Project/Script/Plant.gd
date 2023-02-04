@@ -30,12 +30,16 @@ func _process(delta):
 	if not dead:
 		if not grown:
 			if soil:
-				growth+=delta
+				var plant1 = owner.grid[index - 1]
+				var plant2 = owner.grid[index + 1]
+				if (plant1 != null && plant1.plantGetSin() == "wrath") || (plant2 != null && plant2.plantGetSin() == "wrath"):
+					growth += delta / 2
+				else:
+					growth+=delta
 				if growth>=timeToGrow:
 					grown=true
 					fruit.texture=fruitSprite
 					fruit.modulate=owner.getSin(color)["color"]
-					if plantGetSin()=="lust":
 			if index==-1:
 				if not crying:
 					cry+=delta
