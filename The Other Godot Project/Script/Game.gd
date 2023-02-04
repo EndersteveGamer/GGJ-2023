@@ -5,6 +5,7 @@ var soilColor=[]
 var gridSize=128 # number of case
 var gridWidth=64 # width of each case
 var startingTiles=14
+var victory=startingTiles+49
 var tiles=startingTiles
 var start=(gridSize-startingTiles)/2
 onready var plant=preload("res://Scene/Plant.tscn")
