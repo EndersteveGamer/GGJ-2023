@@ -14,12 +14,15 @@ func gridToPoint(x):
 	return x*gridWidth
 
 func gridStick(what):
+	what.index=pointToGrid(what.position.x)
 	what.position.x=gridToPoint(what.index)
 
 func stickToGrid(x):
-	gridGet(x).position.x=pointToGrid(gridGet(x).position.x)
+	var what=gridGet(x)
+	what.position.x=pointToGrid(what.position.x)
 
 func gridGet(x):
+	print("index is "+str(x))
 	return grid[x]
 
 func gridHas(x):
