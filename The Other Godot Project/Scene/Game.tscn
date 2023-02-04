@@ -10,7 +10,6 @@ script = ExtResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( -1, -2 )
-current = true
 
 [node name="Plant" parent="." instance=ExtResource( 3 )]
 position = Vector2( 129, 33 )
@@ -22,7 +21,3 @@ texture = ExtResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 4.76837e-07, 0 )
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2( -1, -2 )
-current = true
