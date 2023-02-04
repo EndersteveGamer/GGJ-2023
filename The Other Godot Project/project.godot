@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Uproad"
-run/main_scene="res://Scene/Game.tscn"
+run/main_scene="res://Scene/Main Menu.tscn"
 config/icon="res://icon.png"
 
 [display]
