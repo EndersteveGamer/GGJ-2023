@@ -19,6 +19,9 @@ export var timeToCry=2
 export var timeToDie=5
 
 var soundCry=preload("res://Sound/Scream.ogg")
+var fruitSprite=preload("res://Sprite/fruit.png")
+
+onready var fruit=get_node("Fruit")
 
 func _process(delta):
 	if not dead:
@@ -27,6 +30,8 @@ func _process(delta):
 				growth+=delta
 				if growth>=timeToGrow:
 					grown=true
+					fruit.texture=fruitSprite
+					fruit.modulate=owner.getSin(color)["color"]
 			if index==-1:
 				print("out of earth")
 				if not crying:
