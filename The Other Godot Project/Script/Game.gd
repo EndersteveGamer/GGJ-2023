@@ -71,11 +71,20 @@ var sins={
 		"desc":"Grows faster if it's ahead of the other plants"
 	}
 }
-func plantGetSin(x):
-	return sins[sinsIndex[soilColor[x]]]
 
-func getSin(x):
-	return sins[sinsIndex[x]]
+# get the sin data
+func getSin(sI):
+	return sins[sinsIndex[sI]]
+
+func getSinColorCode(sI):
+	return getSin(sI)["color"]
+
+func plantGetSin(x):
+	return getSin(grid[x].color)
+
+func plantGetSinName(x):
+	print("get name "+str(x))
+	return sinsIndex[grid[x].color]
 
 func pointToGrid(x):
 	return floor(x/gridWidth)
@@ -145,9 +154,7 @@ func spawnPlantRandom():
 
 func createSoil(x):
 	var newSoil=soil.instance()
-	print("x is "+str(x))
-	print("soil is "+str(soilColor[x]))
-	newSoil.modulate=getSin(soilColor[x])["color"]
+	newSoil.modulate=getSinColorCode(soilColor[x])
 	newSoil.modulate.a=0.5
 	newSoil.position.y=64
 	newSoil.scale.x=2

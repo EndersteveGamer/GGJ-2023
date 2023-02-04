@@ -23,7 +23,10 @@ func _ready():
 	pass
 
 func plantGetSin(x):
-	return owner.getSin(x)
+	return owner.plantGetSin(x)
+
+func plantGetSinName(p):
+	return p.plantGetSinName()
 
 func plantGetCloser(grown=false):
 	if touched!=null and touched.grown==grown:
@@ -44,7 +47,7 @@ func grab():
 		if uproot!=null:
 			uprooting=0.001
 			grabbed.texture=plantGray
-			grabbed.modulate=owner.getSin(uproot.color)["color"]
+			grabbed.modulate=plantGetSin(uproot.index)["color"]
 			uproot.owner.remove_child(uproot)
 			add_child(uproot)
 			uproot.visible=false
@@ -71,22 +74,18 @@ func grab():
 func plant():
 	if uproot!=null:
 		if uproot.grown:
-			print("planted grown")
 			if index==owner.start or index==owner.start+owner.tiles-1:
-				print("extreme")
 				uproot.queue_free()
 				owner.tiles+=1
 				if index==owner.start:
-					print("left")
 					owner.start-=1
 					owner.soilColor[owner.start]=uproot.color
 					owner.createSoil(owner.start)
 				else:
-					print("right")
 					owner.soilColor[owner.start+owner.tiles-1]=uproot.color
 					owner.createSoil(owner.start+owner.tiles-1)
-				if plantGetSin(index)=="greed":
-					for i in range(owner.start,owner.start+owner.tiles):
+				if owner.sinsIndex[uproot.color]=="greed":
+					for i in range(owner.start,owner.start+owner.tiles-1):
 						if owner.soilColor[i]!=uproot.color:
 							owner.grid[i].growth+2
 				uproot=null
@@ -102,10 +101,35 @@ func plant():
 				remove_child(uproot)
 				owner.add_child(uproot)
 				uproot.set_owner(owner)
-				print("planted to "+str(index))
 				owner.gridSet(index,uproot)
 				owner.gridStick(uproot)
 				grabbed.texture=null
+				if plantGetSinName(uproot)=="gluttony":
+					if not uproot.grown:
+						var steal=1
+						var previous=owner.grid[uproot.index-1]
+						var next=owner.grid[uproot.index+1]
+						if previous!=null and next!=null:
+							if uproot.growth+steal>uproot.timeToGrow:
+								steal=uproot.timeToGrow-uproot.growth
+							var sum=previous.growth+next.growth
+							if sum>steal:
+								steal=sum
+							uproot.growth+=steal
+							previous.growth-=steal/2
+							if previous.growth<0:
+								steal-=previous.growth
+								previous.growth=0
+							next.growth-=steal
+						else:
+							if previous==null:
+								previous=next
+							if previous!=null:
+								previous.growth-=steal
+								if previous.growth<0:
+									steal=-previous.growth
+									previous.growth=0
+								uproot.growth+=steal
 				if owner.soilColor[uproot.index]==uproot.color:
 					uproot.soil=true
 				uproot=null

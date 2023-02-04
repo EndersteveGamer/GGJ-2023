@@ -23,8 +23,11 @@ var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
 
 onready var fruit=get_node("Fruit")
 
+func plantGetSinName():
+	return owner.sinsIndex[color]
+
 func plantGetSin():
-	return owner.getSin(index)
+	return owner.sins[plantGetSinName()]
 
 func _process(delta):
 	if not dead:
@@ -32,26 +35,26 @@ func _process(delta):
 			if soil:
 				var plant1 = owner.grid[index - 1]
 				var plant2 = owner.grid[index + 1]
-				if (plant1 != null && plant1.plantGetSin() == "wrath") || (plant2 != null && plant2.plantGetSin() == "wrath"):
+				if (plant1 != null && plant1.plantGetSinName() == "wrath") || (plant2 != null && plant2.plantGetSinName() == "wrath"):
 					growth += delta / 2
 				else:
 					growth+=delta
-				if owner.grid[index].plantGetSin() == "pride":
+				if owner.grid[index].plantGetSinName() == "pride":
 					if (plant1 != null && plant1.growth > growth) || (plant2 != null && plant1.growth > growth):
 						growth += delta
 				if growth>=timeToGrow:
 					grown=true
 					growth==timeToGrow
 					fruit.texture=fruitSprite
-					fruit.modulate=owner.getSin(color)["color"]
-				if plantGetSin()=="lust":
+					fruit.modulate=owner.getSinColorCode(color)
+				if plantGetSinName()=="lust":
 					if owner.grid[index-1]==null:
 						if owner.grid[index+1]!=null:
 							owner.createPlant(index-1).color=owner.grid[index+1].color
 					else:
 						if owner.grid[index-1]!=null:
 							owner.createPlant(index+1).color=owner.grid[index-1].color
-				if plantGetSin()=="sloth":
+				if plantGetSinName()=="sloth":
 					growth+=delta/2
 					if owner.grid[index-1]!=null :
 							growth-=delta/4
