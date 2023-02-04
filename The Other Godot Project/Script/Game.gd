@@ -169,6 +169,7 @@ func _ready():
 		leftColor[soilColor[i]]-=1
 		createSoil(i)
 	get_node("TileMap").position.x+start*gridWidth
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	plantSpawnTimer+=delta
