@@ -15,6 +15,7 @@ var uprooting=0
 export var timeToUproot=0.5
 
 var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
+var fruitSprte=preload("res://Sprite/fruit.png")
 
 var index=0
 
@@ -49,11 +50,16 @@ func grab():
 			add_child(uproot)
 			uproot.visible=false
 			owner.gridTake(uproot.index)
-			print("index is hopefully "+str(uproot.index))
 			uproot.soil=false
 		else:
 			uproot=plantGetCloser(true)
-			# TODO fruit
+			if uproot!=null:
+				grabbed.texture=fruitSprte
+				grabbed.modulate=owner.getSin(uproot.color)["color"]
+				uproot.owner.remove_child(uproot)
+				add_child(uproot)
+				uproot.visible=false
+				owner.gridTake(uproot.index)
 
 func plant():
 	if uproot!=null:
@@ -114,6 +120,12 @@ func _physics_process(delta):
 		playerUproot(delta)
 	else:
 		playerMovement(delta)
+	var terrainMin=owner.start*owner.gridWidth
+	var terrainMax=(owner.start+owner.tiles-1)*owner.gridWidth
+	if position.x<terrainMin:
+		position.x=terrainMin
+	if position.x>terrainMax:
+		position.x=terrainMax
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

@@ -2,8 +2,11 @@ extends Node2D
 
 var grid=[]
 var soilColor=[]
-var gridSize=64 # number of case
+var gridSize=128 # number of case
 var gridWidth=64 # width of each case
+var startingTiles=14
+var tiles=startingTiles
+var start=(gridSize-startingTiles)/2
 onready var plant=preload("res://Scene/Plant.tscn")
 onready var soil=preload("res://Scene/Soil.tscn")
 
@@ -127,8 +130,12 @@ func _ready():
 	for i in range(gridSize/4):
 		createPlant(i*4)
 	pass # Replace with function body.
-	for i in range(gridSize):
+	var leftColor=[2,2,2,2,2,2,2]
+	for i in range(start,start+tiles):
 		soilColor[i]=rng.randi()%7
+		while leftColor[soilColor[i]]==0:
+			soilColor[i]=rng.randi()%7
+		leftColor[soilColor[i]]-=1
 		var newSoil=soil.instance()
 		newSoil.modulate=getSin(soilColor[i])["color"]
 		newSoil.modulate.a=0.5
@@ -137,7 +144,7 @@ func _ready():
 		newSoil.scale.y=2
 		add_child(newSoil)
 		newSoil.position.x=gridToPoint(i)
-
+	get_node("TileMap").position.x+start*gridWidth
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
