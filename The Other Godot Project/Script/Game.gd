@@ -6,16 +6,52 @@ var gridSize=64 # number of case
 var gridWidth=64 # width of each case
 onready var plant=preload("res://Scene/Plant.tscn")
 onready var rng=RandomNumberGenerator.new()
-
-var sins=[
+var sinsIndex=[
 	"wrath",
 	"envy",
 	"lust",
 	"sloth",
 	"greed",
 	"gluttony",
-	"pride"
+	"pride",
 ]
+var sins={
+	"wrath":
+	{
+		"index":0,
+		"color":Color(1,0,0),
+	},
+	"envy":
+	{
+		"index":1,
+		"color":Color(1,0.5,0),
+	},
+	"lust":
+	{
+		"index":2,
+		"color":Color(1,0,1),
+	},
+	"sloth":
+	{
+		"index":3,
+		"color":Color(0.5,0.5,0.5),
+	},
+	"greed":
+	{
+		"index":4,
+		"color":Color(1,1,0),
+	},
+	"gluttony":
+	{
+		"index":5,
+		"color":Color(0,1,0),
+	},
+	"pride":
+	{
+		"index":6,
+		"color":Color(0,0.5,1),
+	}
+}
 
 func pointToGrid(x):
 	return floor(x/gridWidth)
@@ -81,10 +117,11 @@ func spawnPlantRandom():
 func _ready():
 	grid.resize(gridSize)
 	rng.randomize()
-	for i in range(16):
+	for i in range(gridSize/4):
 		createPlant(i*4)
 	pass # Replace with function body.
-
+	for i in range(gridSize):
+		soilColor[i]=rng.randi()%7
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
