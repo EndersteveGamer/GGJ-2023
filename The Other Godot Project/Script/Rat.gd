@@ -10,6 +10,7 @@ onready var grabbed=get_node("Grab").get_node("Grabbed")
 var touched=null #the plant the rat touches right now
 var second=null #the second plant it touches
 var uproot=null #the plant the rat picked, if null the rat is empty handed
+var index=0
 
 func _ready():
 	pass
@@ -34,19 +35,20 @@ func grab():
 			second=null
 		if uproot!=null:
 			grabbed.texture=uproot.get_node("Sprite").texture
-			print(uproot.owner)
 			uproot.owner.remove_child(uproot)
+			owner.gridTake(uproot.index)
 
 func plant():
 	if uproot!=null:
-		owner.add_child(uproot)
-		uproot.set_owner(owner)
-		print("planted to "+owner.name)
-		uproot.position=position
-		uproot.position.y+=32
-		owner.gridStick(uproot)
-		uproot=null
-		grabbed.texture=null
+		if not owner.gridHas(index):
+			owner.add_child(uproot)
+			uproot.set_owner(owner)
+			print("planted to "+owner.name)
+			uproot.position=position
+			uproot.position.y+=32
+			owner.gridStick(uproot)
+			uproot=null
+			grabbed.texture=null
 
 func playerMovement(delta):
 	var directionInput = Vector2.ZERO
@@ -61,7 +63,7 @@ func playerMovement(delta):
 		grab()
 	elif Input.get_action_strength("ui_down"):
 		plant()
-			
+
 	# Move plant based on orientation
 	if facing:
 		grabbed.position.x = 41
@@ -69,10 +71,11 @@ func playerMovement(delta):
 	else:
 		grabbed.position.x = -41
 		grabbed.flip_h = false
-		
+
 	# Move Rat
+	index=owner.pointToGrid(position.x)
 	move_and_slide(deltaSpeed) # auto delta !
- 
+
 func touchCheck():
 	if touched==null and second!=null:
 		touched=second
