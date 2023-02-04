@@ -19,10 +19,12 @@ func gridHas(x):
 func gridSet(x,what):
 	if not gridHas(x):
 		grid[x]=what
+		what.index=x
 
 func gridTake(x):
 	if gridHas(x):
 		var got=gridGet(x)
+		got.index=-1
 		grid[x]=null
 		return got
 	return null
