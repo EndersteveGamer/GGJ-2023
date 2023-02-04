@@ -48,19 +48,18 @@ func plant():
 		grabbed.texture=null
 
 func playerMovement(delta):
-	var directionInput=Vector2.ZERO
-	directionInput.x= Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	deltaSpeed.x=(deltaSpeed.x+directionInput.x*speed)*deceleration
-	if deltaSpeed.x>0.1:
+	var directionInput = Vector2.ZERO
+	directionInput.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	deltaSpeed.x = (deltaSpeed.x + directionInput.x * speed) * deceleration
+	if deltaSpeed.x > 0.1:
 		facing=true
-	elif deltaSpeed.x<0.2:
+	elif deltaSpeed.x < 0.1:
 		facing=false
-	sprite.flip_h=!facing
+	sprite.flip_h = !facing
 	if Input.get_action_strength("ui_up"):
 		grab()
-	else:
-		if Input.get_action_strength("ui_down"):
-			plant()
+	elif Input.get_action_strength("ui_down"):
+		plant()
 			
 	# Move plant based on orientation
 	if facing:
@@ -69,6 +68,8 @@ func playerMovement(delta):
 	else:
 		grabbed.position.x = -41
 		grabbed.flip_h = false
+		
+	# Move Rat
 	move_and_slide(deltaSpeed) # auto delta !
  
 func touchCheck():
