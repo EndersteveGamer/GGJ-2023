@@ -65,6 +65,14 @@ cell_size = Vector2( 16, 16 )
 format = 1
 tile_data = PoolIntArray( -6, 2, 0, -4, 2, 0, -2, 2, 0, -65536, 2, 0, -65534, 2, 0, -65532, 2, 0, -65530, 2, 0, 65529, 0, 0, 65530, 0, 0, 65531, 0, 0, 65532, 0, 0, 65533, 0, 0, 65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 131065, 1, 0, 131066, 1, 0, 131067, 1, 0, 131068, 1, 0, 131069, 1, 0, 131070, 1, 0, 131071, 1, 0, 65536, 1, 0, 65537, 1, 0, 65538, 1, 0, 65539, 1, 0, 65540, 1, 0, 65541, 1, 0, 65542, 1, 0, 196601, 1, 0, 196602, 1, 0, 196603, 1, 0, 196604, 1, 0, 196605, 1, 0, 196606, 1, 0, 196607, 1, 0, 131072, 1, 0, 131073, 1, 0, 131074, 1, 0, 131075, 1, 0, 131076, 1, 0, 131077, 1, 0, 131078, 1, 0, 262137, 1, 0, 262138, 1, 0, 262139, 1, 0, 262140, 1, 0, 262141, 1, 0, 262142, 1, 0, 262143, 1, 0, 196608, 1, 0, 196609, 1, 0, 196610, 1, 0, 196611, 1, 0, 196612, 1, 0, 196613, 1, 0, 196614, 1, 0 )
 
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+margin_left = -744.0
+margin_top = -402.0
+margin_right = 795.0
+margin_bottom = 491.0
+color = Color( 0, 0.690196, 0.690196, 1 )
+
 [node name="Button" type="Button" parent="."]
 margin_left = -269.0
 margin_top = 84.0
@@ -89,11 +97,3 @@ valign = 1
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
-
-[node name="ColorRect" type="ColorRect" parent="."]
-show_behind_parent = true
-margin_left = -757.0
-margin_top = -419.0
-margin_right = 782.0
-margin_bottom = 474.0
-color = Color( 0, 0.597656, 0.597656, 1 )
