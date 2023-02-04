@@ -12,6 +12,7 @@ var dying=false
 var decay=0
 var dead=false
 
+# time in seconds
 export var timeToGrow=30
 export var timeToDecay=5
 export var timeToCry=2

@@ -66,10 +66,10 @@ func playerMovement(delta):
 
 	# Move plant based on orientation
 	if facing:
-		grabbed.position.x = 41
+		grabbed.position.x = 32
 		grabbed.flip_h = true
 	else:
-		grabbed.position.x = -41
+		grabbed.position.x = -32
 		grabbed.flip_h = false
 
 	# Move Rat
