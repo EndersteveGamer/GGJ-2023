@@ -40,15 +40,15 @@ func grab():
 
 func plant():
 	if uproot!=null:
-		if not owner.gridHas(index):
-			owner.add_child(uproot)
-			uproot.set_owner(owner)
-			print("planted to "+owner.name)
-			uproot.position=position
-			uproot.position.y+=32
-			owner.gridStick(uproot)
-			uproot=null
-			grabbed.texture=null
+		if index>=0 and index<owner.gridSize:
+			if not owner.gridHas(index):
+				owner.add_child(uproot)
+				uproot.set_owner(owner)
+				print("planted to "+str(index))
+				owner.gridSet(index,uproot)
+				owner.gridStick(uproot)
+				uproot=null
+				grabbed.texture=null
 
 func playerMovement(delta):
 	var directionInput = Vector2.ZERO
