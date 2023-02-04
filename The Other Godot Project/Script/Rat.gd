@@ -14,7 +14,7 @@ var uproot=null #the plant the rat picked, if null the rat is empty handed
 var uprooting=0
 export var timeToUproot=0.5
 
-#var plantGray=preload('')
+var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
 
 var index=0
 
@@ -43,7 +43,7 @@ func grab():
 			second=null
 		if uproot!=null:
 			uprooting=0.001
-			grabbed.texture=uproot.get_node("Sprite").texture
+			grabbed.texture=plantGray
 			grabbed.modulate=owner.getSin(uproot.color)["color"]
 			uproot.owner.remove_child(uproot)
 			add_child(uproot)

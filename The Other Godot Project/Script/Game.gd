@@ -5,6 +5,8 @@ var soilColor=[]
 var gridSize=64 # number of case
 var gridWidth=64 # width of each case
 onready var plant=preload("res://Scene/Plant.tscn")
+onready var soil=preload("res://Scene/Soil.tscn")
+
 onready var rng=RandomNumberGenerator.new()
 var sinsIndex=[
 	"wrath",
@@ -127,6 +129,14 @@ func _ready():
 	pass # Replace with function body.
 	for i in range(gridSize):
 		soilColor[i]=rng.randi()%7
+		var newSoil=soil.instance()
+		newSoil.modulate=getSin(soilColor[i])["color"]
+		newSoil.modulate.a=0.5
+		newSoil.position.y=64
+		newSoil.scale.x=2
+		newSoil.scale.y=2
+		add_child(newSoil)
+		newSoil.position.x=gridToPoint(i)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
