@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Fonts/HARLOWSI font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Script/Intro/IntroText.gd" type="Script" id=2]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+margin_left = -561.0
+margin_top = -320.0
+margin_right = 549.0
+margin_bottom = 332.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -406.0
+margin_top = -43.0
+margin_right = 11235.0
+margin_bottom = 1221.0
+rect_scale = Vector2( 0.07, 0.07 )
+custom_fonts/font = ExtResource( 1 )
+text = "This is a test for the intro text"
+align = 1
+valign = 1
+script = ExtResource( 2 )
+displayTime = 0.5
+
+[node name="Timer" type="Timer" parent="Label"]
+one_shot = true
