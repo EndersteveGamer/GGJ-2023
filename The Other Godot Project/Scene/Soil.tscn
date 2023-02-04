@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Sprite/fruit.png" type="Texture" id=1]
+[ext_resource path="res://Sprite/Soil.png" type="Texture" id=1]
 
 [node name="Soil" type="Sprite"]
 texture = ExtResource( 1 )

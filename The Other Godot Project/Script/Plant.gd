@@ -19,7 +19,7 @@ export var timeToCry=2
 export var timeToDie=5
 
 var soundCry=preload("res://Sound/Scream.ogg")
-var fruitSprite=preload("res://Sprite/fruit.png")
+var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
 
 onready var fruit=get_node("Fruit")
 
@@ -33,7 +33,6 @@ func _process(delta):
 					fruit.texture=fruitSprite
 					fruit.modulate=owner.getSin(color)["color"]
 			if index==-1:
-				print("out of earth")
 				if not crying:
 					cry+=delta
 					if cry>timeToCry:

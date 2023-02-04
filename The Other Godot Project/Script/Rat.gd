@@ -15,12 +15,15 @@ var uprooting=0
 export var timeToUproot=0.5
 
 var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
-var fruitSprte=preload("res://Sprite/fruit.png")
+var fruitSprte=preload("res://Sprite/Other Fruit of the 80s.png")
 
 var index=0
 
 func _ready():
 	pass
+
+func plantGetSin(x):
+	return owner.sins[owner.sinsIndex[owner.soilColor[x]]]
 
 func plantGetCloser(grown=false):
 	if touched!=null and touched.grown==grown:
@@ -82,6 +85,10 @@ func plant():
 					print("right")
 					owner.soilColor[owner.start+owner.tiles-1]=uproot.color
 					owner.createSoil(owner.start+owner.tiles-1)
+				if plantGetSin(index)=="greed":
+					for i in range(owner.start,owner.start+owner.tiles):
+						if owner.soilColor[i]!=uproot.color:
+							owner.grid[i].growth+2
 				uproot=null
 				grabbed.texture=null
 				owner.plantSpawnCurrent-=owner.plantSpawnDecrement

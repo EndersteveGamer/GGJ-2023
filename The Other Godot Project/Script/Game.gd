@@ -32,36 +32,43 @@ var sins={
 	{
 		"index":0,
 		"color":Color(1,0,0),
+		"desc":"Reduces nearby progression, but have a progression addition when a new plant appears next by"
 	},
 	"envy":
 	{
 		"index":1,
 		"color":Color(1,0.5,0),
+		"desc":"Grow faster when nearby plants are further ahead"
 	},
 	"lust":
 	{
 		"index":2,
 		"color":Color(1,0,1),
+		"desc":"When grown, will clone the nearby plant to the other side if there's space"
 	},
 	"sloth":
 	{
 		"index":3,
 		"color":Color(0.5,0.5,0.5),
+		"desc":"Grows faster if there's no plants to the sides"
 	},
 	"greed":
 	{
 		"index":4,
 		"color":Color(1,1,0),
+		"desc":"When used to grow the road, will add a bit progression to all but greed plants"
 	},
 	"gluttony":
 	{
 		"index":5,
 		"color":Color(0,1,0),
+		"desc":"Steals part of nearby progression when placed"
 	},
 	"pride":
 	{
 		"index":6,
 		"color":Color(0,0.5,1),
+		"desc":"Grows faster if it's ahead of the other plants"
 	}
 }
 
