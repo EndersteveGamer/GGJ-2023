@@ -1,19 +1,38 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Sprite/Side Rat.png" type="Texture" id=1]
+[ext_resource path="res://Sprite/idle.png" type="Texture" id=1]
 [ext_resource path="res://Script/Rat.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
 
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+length = 0.9
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3, 0.5, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+
 [node name="Rat" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 1.42109e-14, 6 )
-scale = Vector2( 4.59766, 4.59766 )
+position = Vector2( 0, -16 )
+scale = Vector2( 0.5, 0.5 )
 z_index = 1
 texture = ExtResource( 1 )
+hframes = 6
+frame = 4
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -27,6 +46,9 @@ shape = SubResource( 1 )
 position = Vector2( 32, -32 )
 scale = Vector2( 4, 4 )
 z_index = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 2 )
 
 [connection signal="area_entered" from="Grab" to="." method="_on_Grab_area_entered"]
 [connection signal="area_exited" from="Grab" to="." method="_on_Grab_area_exited"]
