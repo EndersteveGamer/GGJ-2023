@@ -7,10 +7,14 @@ onready var plant=preload("res://Scene/Plant.tscn")
 onready var rng=RandomNumberGenerator.new()
 
 func pointToGrid(x):
-	return floor(x/gridWidth)*gridWidth
+	print("x : "+str(x)+"->"+str(floor(x/gridWidth)))
+	return floor(x/gridWidth)
 	
 func gridToPoint(x):
 	return x*gridWidth
+
+func gridStick(what):
+	what.position.x=gridToPoint(what.index)
 
 func stickToGrid(x):
 	gridGet(x).position.x=pointToGrid(gridGet(x).position.x)
@@ -25,7 +29,8 @@ func gridSet(x,what):
 	if not gridHas(x):
 		grid[x]=what
 		what.index=x
-		what.position.x=gridToPoint(x)
+		gridStick(what)
+		print("it is now "+str(what.position.x))
 
 func gridTake(x):
 	if gridHas(x):
