@@ -73,14 +73,14 @@ margin_right = 795.0
 margin_bottom = 491.0
 color = Color( 0, 0.690196, 0.690196, 1 )
 
-[node name="Label" type="Label" parent="."]
-margin_left = -261.0
-margin_top = -270.0
-margin_right = 2792.0
-margin_bottom = 994.0
+[node name="TimeDisplay" type="Label" parent="."]
+margin_left = -395.0
+margin_top = -290.0
+margin_right = 4873.0
+margin_bottom = 974.0
 rect_scale = Vector2( 0.15, 0.15 )
-size_flags_vertical = 0
 custom_fonts/font = ExtResource( 6 )
-text = "Uproad"
+text = "Placeholder"
 align = 1
 valign = 1
+percent_visible = -0.166667

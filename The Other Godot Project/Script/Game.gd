@@ -186,7 +186,7 @@ func _ready():
 		leftColor[soilColor[i]]-=1
 		createSoil(i)
 	get_node("TileMap").position.x+start*gridWidth
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	timeTaken += delta
@@ -197,7 +197,7 @@ func _process(delta):
 		plantSpawnTimer-=plantSpawnCurrent
 		plantSpawnCurrent *= 0.95
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
-		
+
 func endGame():
 	var endScreen = get_node("/root/EndScreen")
 	print(timeTaken)
