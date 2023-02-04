@@ -36,6 +36,9 @@ func _process(delta):
 					growth += delta / 2
 				else:
 					growth+=delta
+				if owner.grid[index].plantGetSin() == "pride":
+					if (plant1 != null && plant1.growth > growth) || (plant2 != null && plant1.growth > growth):
+						growth += delta
 				if growth>=timeToGrow:
 					grown=true
 					fruit.texture=fruitSprite
