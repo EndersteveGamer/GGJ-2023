@@ -50,6 +50,7 @@ func _process(delta):
 					growth==timeToGrow
 					fruit.texture=fruitSprite
 					fruit.modulate=owner.getSinColorCode(color)
+					fruit.z_index = -1
 				if plantGetSinName()=="lust":
 					if owner.grid[index-1]==null:
 						if owner.grid[index+1]!=null:
