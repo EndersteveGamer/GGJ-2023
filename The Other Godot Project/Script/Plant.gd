@@ -33,6 +33,7 @@ func _process(delta):
 				growth+=delta
 				if growth>=timeToGrow:
 					grown=true
+					growth==timeToGrow
 					fruit.texture=fruitSprite
 					fruit.modulate=owner.getSin(color)["color"]
 				if plantGetSin()=="lust":
@@ -42,6 +43,12 @@ func _process(delta):
 					else:
 						if owner.grid[index-1]!=null:
 							owner.createPlant(index+1).color=owner.grid[index-1].color
+				if plantGetSin()=="sloth":
+					growth+=delta/2
+					if owner.grid[index-1]!=null :
+							growth-=delta/4
+					if owner.grid[index+1]!=null :
+							growth-=delta/4
 			if index==-1:
 				if not crying:
 					cry+=delta
