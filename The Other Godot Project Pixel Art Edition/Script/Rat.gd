@@ -95,8 +95,6 @@ func plant():
 				if touched==uproot:
 					touched=second
 				second=null
-				if owner.tiles >= owner.victory:
-					owner.endGame()
 				return
 		if index>=owner.start and index<=owner.start+owner.tiles:
 			if not owner.gridHas(index):
