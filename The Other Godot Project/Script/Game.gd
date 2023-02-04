@@ -56,6 +56,9 @@ func spawnPlantRandom():
 func _ready():
 	grid.resize(gridSize)
 	rng.randomize()
+	createPlant(2)
+	createPlant(3)
+	createPlant(4)
 	spawnPlantRandom()
 	spawnPlantRandom()
 	spawnPlantRandom()

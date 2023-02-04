@@ -34,7 +34,7 @@ func grab():
 			second=null
 		if uproot!=null:
 			grabbed.texture=uproot.get_node("Sprite").texture
-			print("grabed from "+uproot.owner.name)
+			print("grabed from "+uproot.owner)
 			uproot.owner.remove_child(uproot)
 
 func plant():
