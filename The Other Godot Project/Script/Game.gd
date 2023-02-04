@@ -40,6 +40,7 @@ func createPlant(x):
 	if plant!=null:
 		var newPlant=plant.instance()
 		add_child(newPlant)
+		newPlant.owner=self
 		gridSet(x,newPlant)
 		return newPlant
 	return null
