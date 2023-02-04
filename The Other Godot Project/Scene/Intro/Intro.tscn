@@ -17,9 +17,9 @@ margin_bottom = 332.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = -406.0
+margin_left = -512.0
 margin_top = -43.0
-margin_right = 11235.0
+margin_right = 14102.0
 margin_bottom = 1221.0
 rect_scale = Vector2( 0.07, 0.07 )
 custom_fonts/font = ExtResource( 1 )
