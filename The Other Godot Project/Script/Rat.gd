@@ -87,7 +87,8 @@ func plant():
 				if owner.sinsIndex[uproot.color]=="greed":
 					for i in range(owner.start,owner.start+owner.tiles-1):
 						if owner.soilColor[i]!=uproot.color:
-							owner.grid[i].growth+2
+							if owner.grid[i]!=null:
+								owner.grid[i].growth+2
 				uproot=null
 				grabbed.texture=null
 				owner.plantSpawnCurrent-=owner.plantSpawnDecrement
