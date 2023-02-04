@@ -89,3 +89,11 @@ valign = 1
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+margin_left = -757.0
+margin_top = -419.0
+margin_right = 782.0
+margin_bottom = 474.0
+color = Color( 0, 0.597656, 0.597656, 1 )
