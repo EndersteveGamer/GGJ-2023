@@ -42,6 +42,7 @@ func grab():
 		if uproot!=null:
 			uprooting=0.001
 			grabbed.texture=uproot.get_node("Sprite").texture
+			grabbed.modulate=owner.getSin(uproot.color)["color"]
 			uproot.owner.remove_child(uproot)
 			add_child(uproot)
 			uproot.visible=false
@@ -63,10 +64,10 @@ func plant():
 				print("planted to "+str(index))
 				owner.gridSet(index,uproot)
 				owner.gridStick(uproot)
-				uproot=null
 				grabbed.texture=null
 				if owner.soilColor[uproot.index]==uproot.color:
 					uproot.soil=true
+				uproot=null
 
 func playerMovement(delta):
 	var directionInput = Vector2.ZERO

@@ -53,6 +53,9 @@ var sins={
 	}
 }
 
+func getSin(x):
+	return sins[sinsIndex[x]]
+
 func pointToGrid(x):
 	return floor(x/gridWidth)
 	
@@ -102,6 +105,7 @@ func createPlant(x):
 		newPlant.position.y+=32
 		print("index "+str(newPlant.index))
 		newPlant.audioManager=get_node("AudioManager")
+		newPlant.color=rng.randi()%7
 		return newPlant
 	return null
 
@@ -116,6 +120,7 @@ func spawnPlantRandom():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	grid.resize(gridSize)
+	soilColor.resize(gridSize)
 	rng.randomize()
 	for i in range(gridSize/4):
 		createPlant(i*4)
