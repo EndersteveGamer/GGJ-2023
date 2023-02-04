@@ -1,10 +1,21 @@
 extends Node2D
 
 var grid=[]
+var soilColor=[]
 var gridSize=64 # number of case
 var gridWidth=64 # width of each case
 onready var plant=preload("res://Scene/Plant.tscn")
 onready var rng=RandomNumberGenerator.new()
+
+var sins=[
+	"wrath",
+	"envy",
+	"lust",
+	"sloth",
+	"greed",
+	"gluttony",
+	"pride"
+]
 
 func pointToGrid(x):
 	return floor(x/gridWidth)
