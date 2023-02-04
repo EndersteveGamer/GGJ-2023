@@ -19,13 +19,15 @@ var index=0
 func _ready():
 	pass
 
-func plantGetCloser():
-	if touched!=null:
+func plantGetCloser(grown=false):
+	if touched!=null and touched.grown==grown:
 		if second==null:
 			return touched
-		if touched.position.distance_to(position)<second.position.distance_to(position):
-			return touched
-		return second
+		if second.grown==grown:
+			if touched.position.distance_to(position)<second.position.distance_to(position):
+				return touched
+			return second
+		return touched
 	return null
 
 # The closest plant will be grabed
@@ -45,6 +47,10 @@ func grab():
 			uproot.visible=false
 			owner.gridTake(uproot.index)
 			print("index is hopefully "+str(uproot.index))
+			uproot.soil=false
+		else:
+			uproot=plantGetCloser(true)
+			# TODO fruit
 
 func plant():
 	if uproot!=null:
@@ -53,11 +59,14 @@ func plant():
 				uproot.visible=true
 				remove_child(uproot)
 				owner.add_child(uproot)
+				uproot.set_owner(owner)
 				print("planted to "+str(index))
 				owner.gridSet(index,uproot)
 				owner.gridStick(uproot)
 				uproot=null
 				grabbed.texture=null
+				if owner.soilColor[uproot.index]==uproot.color:
+					uproot.soil=true
 
 func playerMovement(delta):
 	var directionInput = Vector2.ZERO
