@@ -78,7 +78,7 @@ func playerMovement(delta):
 		grabbed.flip_h = false
 
 	# Move Rat
-	index=owner.pointToGrid(position.x)
+	index=owner.pointToGrid(position.x+32)
 	move_and_slide(deltaSpeed) # auto delta !
 
 func touchCheck():
