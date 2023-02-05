@@ -175,7 +175,7 @@ func playerPlant(delta):
 				if owner.tiles >= owner.victory:
 					owner.endGame()
 				return
-		else:
+		else: #kek
 			sprite.texture=idle
 			sprite.hframes=6
 			animator.play("idle")
