@@ -17,6 +17,8 @@ export var timeToUproot=0.7
 var planting=0
 export var timeToPlant=0.5
 
+var showUproot=false
+
 var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
 var fruitSprte=preload("res://Sprite/Other Fruit of the 80s.png")
 var idle=preload("res://Sprite/idle.png")
@@ -63,7 +65,8 @@ func grab():
 				grabbed.texture=fruitSprte
 				grabbed.modulate=owner.getSin(uproot.color)["color"]
 				uproot.owner.remove_child(uproot)
-				add_child(uproot)
+				grabbed.add_child(uproot)
+				showUproot=false
 				uproot.visible=false
 				owner.gridTake(uproot.index)
 				if touched==uproot:
@@ -136,13 +139,15 @@ func playerUproot(delta):
 				owner.getDirtBury().position = uproot.position
 				owner.getDirtBury().emitting = true
 				owner.shakeCamera(0.25, 2)
-				grabbed.texture=plantGray
-				grabbed.modulate=plantGetSin(uproot.index)["color"]
+				#grabbed.texture=uproot.sprite.texture
+				#grabbed.modulate=plantGetSin(uproot.index)["color"]
+				#grabbed.add_child(uproot)
 				uproot.owner.remove_child(uproot)
-				add_child(uproot)
-				uproot.visible=false
+				showUproot=true
+				uproot.visible=true
 				owner.gridTake(uproot.index)
 				uproot.soil=false
+				uproot.get_node("AnimationPlayer").play("cry")
 	move_and_slide(deltaSpeed)
 
 func playerPlant(delta):
@@ -151,6 +156,8 @@ func playerPlant(delta):
 	print(str(planting))
 	if planting>timeToPlant:
 		owner.shakeCamera(0.25, 2)
+		grabbed.remove_child(uproot)
+		uproot.get_node("AnimationPlayer").play("sleep")
 		planting=0
 		sprite.texture=idle
 		sprite.hframes=6
@@ -182,10 +189,12 @@ func playerPlant(delta):
 					owner.endGame()
 				return
 		else:
+			showUproot=true
 			uproot.visible=true
 			remove_child(uproot)
 			owner.add_child(uproot)
 			uproot.set_owner(owner)
+			uproot.get_node("AnimationPlayer").play("sleep")
 			owner.gridSet(index,uproot)
 			owner.gridStick(uproot)
 			grabbed.texture=null

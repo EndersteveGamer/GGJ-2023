@@ -20,7 +20,7 @@ export var timeToDie=5
 
 var soundCry=preload("res://Sound/Scream.ogg")
 var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
-
+onready var sprite=get_node("Sprite")
 onready var fruit=get_node("Fruit")
 
 func plantGetSinName():
@@ -47,7 +47,7 @@ func _process(delta):
 						growth += delta
 				if growth>=timeToGrow:
 					grown=true
-					growth==timeToGrow
+					growth=timeToGrow
 					fruit.texture=fruitSprite
 					fruit.modulate=owner.getSinColorCode(color)
 					fruit.z_index = -1
@@ -80,6 +80,7 @@ func _process(delta):
 						if decay>=timeToDecay:
 							dead=true
 			else:
+				$AnimationPlayer.play("sleep")
 				cry=0
 				crying=false
 				death=0
