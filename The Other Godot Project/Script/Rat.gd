@@ -146,7 +146,7 @@ func playerMovement(delta):
 	var directionInput = Vector2.ZERO
 	directionInput.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	deltaSpeed.x = (deltaSpeed.x + directionInput.x * speed) * deceleration
-	if abs(deltaSpeed.x)>0.5:
+	if abs(deltaSpeed.x)>0.1:
 		sprite.texture=run
 		sprite.hframes=9
 		animator.play("run")
