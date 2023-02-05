@@ -18,7 +18,7 @@ tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.3, 0.5, 0.6, 0.8 ),
-"transitions": PoolRealArray( 0, 1, 1, 1, 1, 0 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0 ),
 "update": 0,
 "values": [ 0, 1, 2, 3, 4, 5 ]
 }
@@ -185,7 +185,7 @@ visible = false
 shape = SubResource( 1 )
 
 [node name="Grabbed" type="Sprite" parent="Grab"]
-position = Vector2( 20, -40 )
+position = Vector2( -40, 10 )
 scale = Vector2( 4, 4 )
 z_index = 2
 

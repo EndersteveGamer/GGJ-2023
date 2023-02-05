@@ -13,7 +13,7 @@ var touched=null #the plant the rat touches right now
 var second=null #the second plant it touches
 var uproot=null #the plant the rat picked, if null the rat is empty handed
 var uprooting=0
-export var timeToUproot=0.5
+export var timeToUproot=0.7
 
 var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
 var fruitSprte=preload("res://Sprite/Other Fruit of the 80s.png")
@@ -48,20 +48,12 @@ func grab():
 	if uproot==null:
 		uproot=plantGetCloser()
 		if uproot!=null:
-			owner.getDirtBury().position = uproot.position
-			owner.getDirtBury().emitting = true
-			uprooting=0.001
-			grabbed.texture=plantGray
-			grabbed.modulate=plantGetSin(uproot.index)["color"]
-			uproot.owner.remove_child(uproot)
-			add_child(uproot)
-			uproot.visible=false
-			owner.gridTake(uproot.index)
-			uproot.soil=false
-			if touched==uproot:
-				touched=second
-			else:
-				second=null
+			if uprooting==0:
+				uprooting=0.001
+				if touched==uproot:
+					touched=second
+				else:
+					second=null
 		else:
 			uproot=plantGetCloser(true)
 			if uproot!=null:
@@ -199,17 +191,20 @@ func playerUproot(delta):
 		sprite.texture=uprootAnimation
 		sprite.hframes=6
 		animator.play("uproot")
+		if uprooting>0.5:
+			if uproot.visible:
+				owner.getDirtBury().position = uproot.position
+				owner.getDirtBury().emitting = true
+				grabbed.texture=plantGray
+				grabbed.modulate=plantGetSin(uproot.index)["color"]
+				uproot.owner.remove_child(uproot)
+				add_child(uproot)
+				uproot.visible=false
+				owner.gridTake(uproot.index)
+				uproot.soil=false
 	move_and_slide(deltaSpeed)
 
 func _physics_process(delta):
-	if abs(deltaSpeed.x)>0.1:
-		sprite.texture=run
-		sprite.hframes=9
-		animator.play("run")
-	else:
-		sprite.texture=idle
-		sprite.hframes=6
-		animator.play("idle")
 	if uproot!=null:
 		if uproot.dead:
 			remove_child(uproot)
@@ -219,6 +214,14 @@ func _physics_process(delta):
 	if uprooting>0:
 		playerUproot(delta)
 	else:
+		if abs(deltaSpeed.x)>0.1:
+			sprite.texture=run
+			sprite.hframes=9
+			animator.play("run")
+		else:
+			sprite.texture=idle
+			sprite.hframes=6
+			animator.play("idle")
 		playerMovement(delta)
 	var terrainMin=owner.start*owner.gridWidth
 	var terrainMax=(owner.start+owner.tiles-1)*owner.gridWidth
@@ -238,12 +241,9 @@ func _on_Grab_area_entered(area):
 		else:
 			if second==null and area!=touched:
 				second=area
-		print(area.name)
 
 func _on_Grab_area_exited(area):
 	if area.visible:
-		if area.soil:
-			print("noice")
 		if area==touched:
 			touched=second
 			second=null
