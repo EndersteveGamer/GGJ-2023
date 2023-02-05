@@ -21,6 +21,11 @@ export var plantSpawnTimer=0
 
 var timeTaken = 0
 
+onready var dirtBury = $DirtBury
+
+func getDirtBury():
+	return dirtBury
+
 var sinsIndex=[
 	"wrath",
 	"envy",
