@@ -14,12 +14,15 @@ var second=null #the second plant it touches
 var uproot=null #the plant the rat picked, if null the rat is empty handed
 var uprooting=0
 export var timeToUproot=0.7
+var planting=0
+export var timeToPlant=0.5
 
 var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
 var fruitSprte=preload("res://Sprite/Other Fruit of the 80s.png")
 var idle=preload("res://Sprite/idle.png")
 var run=preload("res://Sprite/run.png")
 var uprootAnimation=preload("res://Sprite/uproot.png")
+var plantAnimation=preload("res://Sprite/plant.png")
 var index=0
 
 func _ready():
@@ -72,77 +75,13 @@ func plant():
 	if uproot!=null:
 		if uproot.grown:
 			if index==owner.start or index==owner.start+owner.tiles-1:
-				uproot.queue_free()
-				owner.tiles+=1
-				if index==owner.start:
-					owner.start-=1
-					owner.soilColor[owner.start]=uproot.color
-					owner.createSoil(owner.start)
-					owner.getUnlockParticles().position.x = owner.gridToPoint(owner.start)
-				else:
-					owner.soilColor[owner.start+owner.tiles-1]=uproot.color
-					owner.createSoil(owner.start+owner.tiles-1)
-					owner.getUnlockParticles().position.x = owner.gridToPoint(owner.start + owner.tiles - 1)
-				owner.getUnlockParticles().position.y = 64
-				owner.getUnlockParticles().color = owner.sins[owner.sinsIndex[uproot.color]]["color"]
-				owner.getUnlockParticles().emitting = true
-				if owner.sinsIndex[uproot.color]=="greed":
-					for i in range(owner.start,owner.start+owner.tiles-1):
-						if owner.soilColor[i]!=uproot.color:
-							if owner.grid[i]!=null:
-								owner.grid[i].growth+2
-				uproot=null
-				grabbed.texture=null
-				owner.plantSpawnCurrent+=owner.plantSpawnDecrement
+				planting=0.01
 				if touched==uproot:
 					touched=second
 				second=null
-				if owner.tiles >= owner.victory:
-					owner.endGame()
-				return
-		if index>=owner.start and index<=owner.start+owner.tiles:
+		else:
 			if not owner.gridHas(index):
-				uproot.visible=true
-				remove_child(uproot)
-				owner.add_child(uproot)
-				uproot.set_owner(owner)
-				owner.gridSet(index,uproot)
-				owner.gridStick(uproot)
-				grabbed.texture=null
-				
-				owner.getDirtBury().position = uproot.position
-				owner.getDirtBury().emitting = true
-				owner.shakeCamera(0.25, 2)
-				
-				if plantGetSinName(uproot)=="gluttony":
-					if not uproot.grown:
-						var steal=1
-						var previous=owner.grid[uproot.index-1]
-						var next=owner.grid[uproot.index+1]
-						if previous!=null and next!=null:
-							if uproot.growth+steal>uproot.timeToGrow:
-								steal=uproot.timeToGrow-uproot.growth
-							var sum=previous.growth+next.growth
-							if sum>steal:
-								steal=sum
-							uproot.growth+=steal
-							previous.growth-=steal/2
-							if previous.growth<0:
-								steal-=previous.growth
-								previous.growth=0
-							next.growth-=steal
-						else:
-							if previous==null:
-								previous=next
-							if previous!=null:
-								previous.growth-=steal
-								if previous.growth<0:
-									steal=-previous.growth
-									previous.growth=0
-								uproot.growth+=steal
-				if owner.soilColor[uproot.index]==uproot.color:
-					uproot.soil=true
-				uproot=null
+				planting=0.01
 				if touched==uproot:
 					touched=second
 				second=null
@@ -209,8 +148,13 @@ func playerUproot(delta):
 func playerPlant(delta):
 	planting+=delta
 	deltaSpeed.x*=deceleration
+	print(str(planting))
 	if planting>timeToPlant:
+		owner.shakeCamera(0.25, 2)
 		planting=0
+		sprite.texture=idle
+		sprite.hframes=6
+		animator.play("idle")
 		if uproot.grown:
 				uproot.queue_free()
 				owner.tiles+=1
@@ -237,10 +181,7 @@ func playerPlant(delta):
 				if owner.tiles >= owner.victory:
 					owner.endGame()
 				return
-		else: #kek
-			sprite.texture=idle
-			sprite.hframes=6
-			animator.play("idle")
+		else:
 			uproot.visible=true
 			remove_child(uproot)
 			owner.add_child(uproot)
@@ -285,6 +226,7 @@ func playerPlant(delta):
 		sprite.texture=plantAnimation
 		sprite.hframes=5
 		animator.play("plant")
+		print("play")
 
 func _physics_process(delta):
 	if uproot!=null:
@@ -296,15 +238,18 @@ func _physics_process(delta):
 	if uprooting>0:
 		playerUproot(delta)
 	else:
-		if abs(deltaSpeed.x)>0.1:
-			sprite.texture=run
-			sprite.hframes=9
-			animator.play("run")
+		if planting>0:
+			playerPlant(delta)
 		else:
-			sprite.texture=idle
-			sprite.hframes=6
-			animator.play("idle")
-		playerMovement(delta)
+			if abs(deltaSpeed.x)>0.1:
+				sprite.texture=run
+				sprite.hframes=9
+				animator.play("run")
+			else:
+				sprite.texture=idle
+				sprite.hframes=6
+				animator.play("idle")
+			playerMovement(delta)
 	var terrainMin=owner.start*owner.gridWidth
 	var terrainMax=(owner.start+owner.tiles-1)*owner.gridWidth
 	if position.x<terrainMin:
