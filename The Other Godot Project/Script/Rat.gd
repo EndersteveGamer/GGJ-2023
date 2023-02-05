@@ -19,6 +19,7 @@ var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
 var fruitSprte=preload("res://Sprite/Other Fruit of the 80s.png")
 var idle=preload("res://Sprite/idle.png")
 var run=preload("res://Sprite/run.png")
+var uprootAnimation=preload("res://Sprite/uproot.png")
 var index=0
 
 func _ready():
@@ -191,6 +192,13 @@ func playerUproot(delta):
 	deltaSpeed.x*=deceleration
 	if uprooting>timeToUproot:
 		uprooting=0
+		sprite.texture=idle
+		sprite.hframes=6
+		animator.play("idle")
+	else:
+		sprite.texture=uprootAnimation
+		sprite.hframes=6
+		animator.play("uproot")
 	move_and_slide(deltaSpeed)
 
 func _physics_process(delta):
