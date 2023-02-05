@@ -22,9 +22,13 @@ export var plantSpawnTimer=0
 var timeTaken = 0
 
 onready var dirtBury = $DirtBury
+onready var unlockParticles = $UnlockParticles
 
 func getDirtBury():
 	return dirtBury
+	
+func getUnlockParticles():
+	return unlockParticles
 
 var sinsIndex=[
 	"wrath",

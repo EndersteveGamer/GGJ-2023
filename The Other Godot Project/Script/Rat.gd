@@ -85,9 +85,14 @@ func plant():
 					owner.start-=1
 					owner.soilColor[owner.start]=uproot.color
 					owner.createSoil(owner.start)
+					owner.getUnlockParticles().position.x = owner.gridToPoint(owner.start)
 				else:
 					owner.soilColor[owner.start+owner.tiles-1]=uproot.color
 					owner.createSoil(owner.start+owner.tiles-1)
+					owner.getUnlockParticles().position.x = owner.gridToPoint(owner.start + owner.tiles - 1)
+				owner.getUnlockParticles().position.y = 64
+				owner.getUnlockParticles().color = owner.sins[owner.sinsIndex[uproot.color]]["color"]
+				owner.getUnlockParticles().emitting = true
 				if owner.sinsIndex[uproot.color]=="greed":
 					for i in range(owner.start,owner.start+owner.tiles-1):
 						if owner.soilColor[i]!=uproot.color:
