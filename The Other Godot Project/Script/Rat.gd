@@ -7,6 +7,7 @@ var facing=false # false is facing right
 onready var sprite=get_node("Sprite")
 onready var grabbed=get_node("Grab").get_node("Grabbed")
 onready var audioManager=owner.get_node("AudioManager")
+onready var animator=get_node("AnimationPlayer")
 
 var touched=null #the plant the rat touches right now
 var second=null #the second plant it touches
@@ -16,7 +17,8 @@ export var timeToUproot=0.5
 
 var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
 var fruitSprte=preload("res://Sprite/Other Fruit of the 80s.png")
-
+var idle=preload("res://Sprite/idle.png")
+var run=preload("res://Sprite/run.png")
 var index=0
 
 func _ready():
@@ -144,6 +146,14 @@ func playerMovement(delta):
 	var directionInput = Vector2.ZERO
 	directionInput.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	deltaSpeed.x = (deltaSpeed.x + directionInput.x * speed) * deceleration
+	if abs(deltaSpeed.x)>0.5:
+		sprite.texture=run
+		sprite.hframes=9
+		animator.play("run")
+	else:
+		sprite.texture=idle
+		sprite.hframes=6
+		animator.play("idle")
 	if Input.get_action_strength("ui_right") > 0:
 		facing=true
 	elif Input.get_action_strength("ui_left") > 0:
