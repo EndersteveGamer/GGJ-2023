@@ -15,6 +15,7 @@ func _process(delta):
 	$TimeDisplay.text = "Time taken:\n" + str(minutes) + "m " + str(seconds) + "s"
 	timeBeforeEnding -= delta
 	if timeBeforeEnding <= 0:
-		get_tree().change_scene("res://Scene/Main Menu.tscn")
 		timeBeforeEnding = 10
 		timeTaken = 0
+		GlobalVars.isEndScreen = false
+		get_tree().change_scene("res://Scene/Main Menu.tscn")

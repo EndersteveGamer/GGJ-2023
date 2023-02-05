@@ -210,4 +210,5 @@ func _process(delta):
 func endGame():
 	var GlobalVars = get_node("/root/GlobalVars")
 	GlobalVars.timeTaken = timeTaken
+	GlobalVars.isEndScreen = true
 	get_tree().change_scene("res://Scene/End Screen.tscn")
