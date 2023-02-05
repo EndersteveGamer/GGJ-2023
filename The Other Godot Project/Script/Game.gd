@@ -108,7 +108,10 @@ func getSinColorCode(sI):
 	return getSin(sI)["color"]
 
 func plantGetSin(x):
-	return getSin(grid[x].color)
+	if grid[x] == null:
+		return getSin(0)
+	else:
+		return getSin(grid[x].color)
 
 func plantGetSinName(x):
 	print("get name "+str(x))
