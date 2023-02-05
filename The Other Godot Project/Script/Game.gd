@@ -23,6 +23,9 @@ export var plantSpawnTimer=0
 
 var timeTaken = 0
 
+var timeLeftToShake : float = 0
+var shakeStrength : float = 0
+
 onready var dirtBury = $DirtBury
 onready var unlockParticles = $UnlockParticles
 
@@ -31,6 +34,10 @@ func getDirtBury():
 	
 func getUnlockParticles():
 	return unlockParticles
+	
+func shakeCamera(time : float, strength : float):
+	timeLeftToShake = time
+	shakeStrength = strength
 
 var sinsIndex=[
 	"wrath",
@@ -201,6 +208,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	timeTaken += delta
+	timeLeftToShake -= delta
 	plantSpawnTimer+=delta
 	if plantSpawnTimer>plantSpawnCurrent:
 		if getPlantsNum() <= tiles / 2:
@@ -209,6 +217,15 @@ func _process(delta):
 		plantSpawnCurrent *= 0.9
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
 	progressDisplay.value = tiles - 14
+	if timeLeftToShake > 0:
+		var value = rng.randf() * 360
+		var xOffset = shakeStrength * cos(value)
+		var yOffset = shakeStrength * sin(value)
+		$Player/Camera2D.offset_h = xOffset
+		$Player/Camera2D.offset_v = yOffset
+	else:
+		$Player/Camera2D.offset_h = 0
+		$Player/Camera2D.offset_v = 0
 
 func endGame():
 	var GlobalVars = get_node("/root/GlobalVars")
