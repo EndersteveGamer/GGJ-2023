@@ -146,14 +146,6 @@ func playerMovement(delta):
 	var directionInput = Vector2.ZERO
 	directionInput.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	deltaSpeed.x = (deltaSpeed.x + directionInput.x * speed) * deceleration
-	if abs(deltaSpeed.x)>0.1:
-		sprite.texture=run
-		sprite.hframes=9
-		animator.play("run")
-	else:
-		sprite.texture=idle
-		sprite.hframes=6
-		animator.play("idle")
 	if Input.get_action_strength("ui_right") > 0:
 		facing=true
 	elif Input.get_action_strength("ui_left") > 0:
@@ -191,6 +183,14 @@ func playerUproot(delta):
 	move_and_slide(deltaSpeed)
 
 func _physics_process(delta):
+	if abs(deltaSpeed.x)>0.1:
+		sprite.texture=run
+		sprite.hframes=9
+		animator.play("run")
+	else:
+		sprite.texture=idle
+		sprite.hframes=6
+		animator.play("idle")
 	if uproot!=null:
 		if uproot.dead:
 			remove_child(uproot)
