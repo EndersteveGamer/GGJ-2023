@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Sprite/idle.png" type="Texture" id=1]
 [ext_resource path="res://Script/Rat.gd" type="Script" id=2]
@@ -57,57 +57,6 @@ tracks/3/keys = {
 "transitions": PoolRealArray( 0, 0, 0, 0, 0 ),
 "update": 0,
 "values": [ Vector2( -40, 10 ), Vector2( -35, 16 ), Vector2( -40, 8 ), Vector2( -35, 0 ), Vector2( -40, 10 ) ]
-}
-
-[sub_resource type="Animation" id=5]
-resource_name = "plant"
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
-"transitions": PoolRealArray( 0, 0, 0, 0, 0 ),
-"update": 1,
-"values": [ 0, 1, 2, 3, 4 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 0 ),
-"update": 1,
-"values": [ 5 ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite:texture")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 0 ),
-"update": 1,
-"values": [ ExtResource( 1 ) ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Grab/Grabbed:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
-"transitions": PoolRealArray( 0, 0, 0, 0, 0 ),
-"update": 0,
-"values": [ Vector2( 34, -24 ), Vector2( 26, -34 ), Vector2( -40, -40 ), Vector2( -40, 8 ), Vector2( 20, 28 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -223,8 +172,7 @@ position = Vector2( 0, -16 )
 scale = Vector2( 0.5, 0.5 )
 z_index = 1
 texture = ExtResource( 1 )
-hframes = 5
-frame = 4
+hframes = 6
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 visible = false
@@ -237,13 +185,12 @@ visible = false
 shape = SubResource( 1 )
 
 [node name="Grabbed" type="Sprite" parent="Grab"]
-position = Vector2( 20, 28 )
+position = Vector2( -40, 10 )
 scale = Vector2( 4, 4 )
 z_index = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/idle = SubResource( 2 )
-anims/plant = SubResource( 5 )
 anims/run = SubResource( 3 )
 anims/uproot = SubResource( 4 )
 
