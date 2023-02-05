@@ -83,4 +83,3 @@ custom_fonts/font = ExtResource( 6 )
 text = "Placeholder"
 align = 1
 valign = 1
-percent_visible = -0.166667

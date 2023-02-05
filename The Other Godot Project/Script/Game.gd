@@ -5,7 +5,7 @@ var soilColor=[]
 var gridSize=128 # number of case
 var gridWidth=64 # width of each case
 var startingTiles : int =14
-var victory : int=startingTiles+0
+var victory : int=startingTiles+30
 var tiles=startingTiles
 var start=(gridSize-startingTiles)/2
 onready var plant=preload("res://Scene/Plant.tscn")
@@ -15,8 +15,8 @@ onready var rng=RandomNumberGenerator.new()
 
 export var plantSpawndBase=20
 var plantSpawnCurrent=plantSpawndBase
-export var plantSpawnIncrement=1
-export var plantSpawnDecrement=1
+export(float) var plantSpawnIncrement=1
+export(float) var plantSpawnDecrement=1
 export var plantSpawnTimer=0
 
 var timeTaken = 0
@@ -195,12 +195,10 @@ func _process(delta):
 		if getPlantsNum() <= tiles - 5:
 			spawnPlantRandom()
 		plantSpawnTimer-=plantSpawnCurrent
-		plantSpawnCurrent *= 0.95
+		plantSpawnCurrent *= 0.9
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
 
 func endGame():
-	var endScreen = get_node("/root/EndScreen")
-	print(timeTaken)
-	endScreen.timeTaken = timeTaken
-	endScreen.isGameEnded = true
+	var GlobalVars = get_node("/root/GlobalVars")
+	GlobalVars.timeTaken = timeTaken
 	get_tree().change_scene("res://Scene/End Screen.tscn")
