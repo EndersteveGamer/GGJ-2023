@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-EndScreen="*res://Scene/End Screen.tscn"
+GlobalVars="*res://Scene/GlobalVars.tscn"
 
 [display]
 
