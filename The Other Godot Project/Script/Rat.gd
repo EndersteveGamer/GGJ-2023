@@ -47,6 +47,8 @@ func grab():
 	if uproot==null:
 		uproot=plantGetCloser()
 		if uproot!=null:
+			owner.getDirtBury().position = uproot.position
+			owner.getDirtBury().emitting = true
 			uprooting=0.001
 			grabbed.texture=plantGray
 			grabbed.modulate=plantGetSin(uproot.index)["color"]
@@ -99,8 +101,6 @@ func plant():
 				second=null
 				if owner.tiles >= owner.victory:
 					owner.endGame()
-				owner.getDirtBury().position = position
-				owner.getDirtBury().emitting = true
 				return
 		if index>=owner.start and index<=owner.start+owner.tiles:
 			if not owner.gridHas(index):
@@ -111,6 +111,10 @@ func plant():
 				owner.gridSet(index,uproot)
 				owner.gridStick(uproot)
 				grabbed.texture=null
+				
+				owner.getDirtBury().position = uproot.position
+				owner.getDirtBury().emitting = true
+				
 				if plantGetSinName(uproot)=="gluttony":
 					if not uproot.grown:
 						var steal=1

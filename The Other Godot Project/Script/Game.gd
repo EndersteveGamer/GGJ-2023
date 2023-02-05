@@ -197,7 +197,7 @@ func _process(delta):
 	timeTaken += delta
 	plantSpawnTimer+=delta
 	if plantSpawnTimer>plantSpawnCurrent:
-		if getPlantsNum() <= tiles - 5:
+		if getPlantsNum() <= tiles / 2:
 			spawnPlantRandom()
 		plantSpawnTimer-=plantSpawnCurrent
 		plantSpawnCurrent *= 0.9
