@@ -112,6 +112,7 @@ func plant():
 				
 				owner.getDirtBury().position = uproot.position
 				owner.getDirtBury().emitting = true
+				owner.shakeCamera(0.25, 2)
 				
 				if plantGetSinName(uproot)=="gluttony":
 					if not uproot.grown:
@@ -195,6 +196,7 @@ func playerUproot(delta):
 			if uproot.visible:
 				owner.getDirtBury().position = uproot.position
 				owner.getDirtBury().emitting = true
+				owner.shakeCamera(0.25, 2)
 				grabbed.texture=plantGray
 				grabbed.modulate=plantGetSin(uproot.index)["color"]
 				uproot.owner.remove_child(uproot)
