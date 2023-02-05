@@ -11,6 +11,8 @@ var start=(gridSize-startingTiles)/2
 onready var plant=preload("res://Scene/Plant.tscn")
 onready var soil=preload("res://Scene/Soil.tscn")
 
+onready var progressDisplay = $CanvasLayer/TextureProgress
+
 onready var rng=RandomNumberGenerator.new()
 
 export var plantSpawndBase=20
@@ -206,6 +208,7 @@ func _process(delta):
 		plantSpawnTimer-=plantSpawnCurrent
 		plantSpawnCurrent *= 0.9
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
+	progressDisplay.value = tiles - 14
 
 func endGame():
 	var GlobalVars = get_node("/root/GlobalVars")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scene/Rat.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Sprite/Root Block.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Sprite/Rooted Dirt.png" type="Texture" id=6]
 [ext_resource path="res://Scene/DirtParticles.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scene/UnlockParticles.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scene/ProgressDisplay.tscn" type="PackedScene" id=9]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Camera2D
@@ -119,3 +120,9 @@ position = Vector2( -100, 956 )
 
 [node name="UnlockParticles" parent="." instance=ExtResource( 8 )]
 position = Vector2( -282, 986 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureProgress" parent="CanvasLayer" instance=ExtResource( 9 )]
+margin_right = 1408.0
+value = 1.0
