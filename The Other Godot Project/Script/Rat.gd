@@ -135,13 +135,14 @@ func playerUproot(delta):
 		sprite.hframes=6
 		animator.play("uproot")
 		if uprooting>0.5:
-			if uproot.visible:
+			if !showUproot:
 				owner.getDirtBury().position = uproot.position
 				owner.getDirtBury().emitting = true
 				owner.shakeCamera(0.25, 2)
 				#grabbed.texture=uproot.sprite.texture
 				#grabbed.modulate=plantGetSin(uproot.index)["color"]
 				#grabbed.add_child(uproot)
+				print("uproot is "+str(uproot.owner))
 				uproot.owner.remove_child(uproot)
 				showUproot=true
 				uproot.visible=true
