@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Sprite/idle.png" type="Texture" id=1]
 [ext_resource path="res://Script/Rat.gd" type="Script" id=2]
@@ -112,6 +112,58 @@ tracks/3/keys = {
 "values": [ ExtResource( 1 ) ]
 }
 
+[sub_resource type="Animation" id=4]
+resource_name = "uproot"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.6 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 0 ),
+"update": 1,
+"values": [ ExtResource( 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:hframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 6 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Grab/Grabbed:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.4, 0.6 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 20, -40 ), Vector2( 36, 20 ), Vector2( 8, -40 ), Vector2( -16, -64 ), Vector2( 28, -24 ) ]
+}
+
 [node name="Rat" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
@@ -120,8 +172,8 @@ position = Vector2( 0, -16 )
 scale = Vector2( 0.5, 0.5 )
 z_index = 1
 texture = ExtResource( 1 )
-hframes = 9
-frame = 6
+hframes = 6
+frame = 5
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 visible = false
@@ -134,7 +186,7 @@ visible = false
 shape = SubResource( 1 )
 
 [node name="Grabbed" type="Sprite" parent="Grab"]
-position = Vector2( -32, -24 )
+position = Vector2( 28, -24 )
 scale = Vector2( 4, 4 )
 z_index = 2
 
@@ -142,6 +194,7 @@ z_index = 2
 reset_on_save = false
 anims/idle = SubResource( 2 )
 anims/run = SubResource( 3 )
+anims/uproot = SubResource( 4 )
 
 [connection signal="area_entered" from="Grab" to="." method="_on_Grab_area_entered"]
 [connection signal="area_exited" from="Grab" to="." method="_on_Grab_area_exited"]
