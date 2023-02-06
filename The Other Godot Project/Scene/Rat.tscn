@@ -123,7 +123,7 @@ tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 0, 0, 0, 0, 1, 0, 0, 0, 0 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "update": 0,
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
 }
@@ -144,7 +144,7 @@ tracks/2/path = NodePath("Sprite:hframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -156,7 +156,7 @@ tracks/3/path = NodePath("Sprite:texture")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
-tracks/3/enabled = true
+tracks/3/enabled = false
 tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -224,8 +224,7 @@ position = Vector2( 0, -16 )
 scale = Vector2( 0.5, 0.5 )
 z_index = 1
 texture = ExtResource( 1 )
-hframes = 5
-frame = 1
+hframes = 9
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 visible = false
@@ -238,7 +237,7 @@ visible = false
 shape = SubResource( 1 )
 
 [node name="Grabbed" type="Sprite" parent="Grab"]
-position = Vector2( 26, -34 )
+position = Vector2( 36, 0 )
 scale = Vector2( 0.5, 0.5 )
 z_index = 2
 texture = ExtResource( 3 )
