@@ -212,7 +212,7 @@ func spawnPlantRandom():
 	var x=rng.randi()%tiles+start
 	var threshold=100
 	var i=0
-	while gridHas(x):
+	while gridHas(x) and x!=get_node("Rat").index:
 		x+=1
 		if x>gridSize:
 			x=0
@@ -240,7 +240,7 @@ func _ready():
 	soilColor.resize(gridSize)
 	soilNode.resize(gridSize)
 	rng.randomize()
-	spawnPlantRandom() # Replace with function body.
+	spawnPlantRandom()
 	var leftColor=[2,2,2,2,2,2,2]
 	for i in range(start,start+tiles):
 		soilColor[i]=rng.randi()%7
@@ -259,7 +259,7 @@ func _process(delta):
 		if getPlantsNum() <= tiles / 2:
 			spawnPlantRandom()
 		plantSpawnTimer-=plantSpawnCurrent
-		plantSpawnCurrent *= 1.1
+		plantSpawnCurrent+=plantSpawnIncrement
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
 	progressDisplay.value = tiles - 14
 	if timeLeftToShake > 0:

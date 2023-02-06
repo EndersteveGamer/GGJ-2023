@@ -65,20 +65,21 @@ func selectedLoop():
 	else:
 		if previousTouched!=-1:
 			owner.soilNode[previousTouched].modulate.a=0.5
-			previousTouched=-1
-		if touched!=null:
-			if previousTouched==-1:
-				previousTouched=touched.index
-				if owner.gridGet(previousTouched)!=null:
-					owner.gridGet(previousTouched).sprite.modulate.a=0.75
-			if touched.index!=previousTouched:
-				owner.gridGet(previousTouched).sprite.modulate.a=0.5
-				touched.sprite.modulate.a=0.75
-				previousTouched=touched.index
-		else:
-			if previousTouched!=-1:
-				owner.gridGet(previousTouched).sprite.modulate.a=0.5
-				previousTouched=-1
+			# previousTouched=-1
+#		if touched!=null:
+#			if previousTouched==-1:
+#				previousTouched=touched.index
+#				if owner.gridGet(previousTouched)!=null:
+#					owner.gridGet(previousTouched).sprite.modulate=Color(1,1,1)
+#			if touched.index!=previousTouched:
+#				owner.gridGet(previousTouched).sprite.modulate=Color(1,1,1)
+#				touched.sprite.modulate.a=Color(1.25,1.25,1.25)
+#				previousTouched=touched.index
+#				print(str(previousTouched))
+#		else:
+#			if previousTouched!=-1:
+#				owner.gridGet(previousTouched).sprite.modulate=Color(1,1,1)
+#				previousTouched=-1
 
 # The closest plant will be grabed
 # Skipped if the rat already have a plant
@@ -188,6 +189,7 @@ func playerUproot(delta):
 				sounder.play()
 				previousTouched=index
 				owner.soilNode[index].modulate.a=0.75
+				uproot.sprite.modulate=Color(1,1,1)
 	move_and_slide(deltaSpeed)
 
 func playerPlant(delta):
@@ -329,6 +331,8 @@ func _on_Grab_area_entered(area):
 	if area.visible:
 		if touched==null:
 			touched=area
+			print("set")
+			touched.sprite.modulate=Color(1.25,1.25,1.25)
 		else:
 			if second==null and area!=touched:
 				second=area
@@ -336,7 +340,10 @@ func _on_Grab_area_entered(area):
 func _on_Grab_area_exited(area):
 	if area.visible:
 		if area==touched:
+			touched.sprite.modulate=Color(1,1,1)
 			touched=second
+			if second!=null:
+				second.sprite.modulate=Color(1.25,1.25,1.25)
 			second=null
 			return
 		if area==second:
