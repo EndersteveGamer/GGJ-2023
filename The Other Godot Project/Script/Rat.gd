@@ -69,7 +69,8 @@ func selectedLoop():
 		if touched!=null:
 			if previousTouched==-1:
 				previousTouched=touched.index
-				owner.gridGet(previousTouched).sprite.modulate.a=0.75
+				if owner.gridGet(previousTouched)!=null:
+					owner.gridGet(previousTouched).sprite.modulate.a=0.75
 			if touched.index!=previousTouched:
 				owner.gridGet(previousTouched).sprite.modulate.a=0.5
 				touched.sprite.modulate.a=0.75
