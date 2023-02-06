@@ -54,6 +54,7 @@ func grab():
 		uproot=plantGetCloser()
 		if uproot!=null:
 			grabbed.modulate=Color(1,1,1,1)
+			grabbed.scale=Vector2(1,1)
 			if uprooting==0:
 				uprooting=0.001
 				inHand=false
@@ -66,6 +67,7 @@ func grab():
 			if uproot!=null:
 				grabbed.texture=fruitSprite
 				grabbed.modulate=owner.getSin(uproot.color)["color"]
+				grabbed.scale=Vector2(2,2)
 				uproot.game.remove_child(uproot)
 				grabbed.add_child(uproot)
 				inHand=false
@@ -165,6 +167,8 @@ func playerPlant(delta):
 		# the plant is back in the ground
 		inHand=false
 		owner.shakeCamera(0.25, 2)
+		if uproot==null:
+			return
 		grabbed.remove_child(uproot)
 		uproot.get_node("AnimationPlayer").play("sleep")
 		planting=0

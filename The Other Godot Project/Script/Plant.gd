@@ -82,8 +82,13 @@ func _process(delta):
 					else:
 						decay+=delta
 						if decay>=timeToDecay:
+							decay=timeToDecay
 							dead=true
+						sprite.modulate.a=1-(decay/timeToDecay)
+						sounder.volume_db=-decay/timeToDecay*25
 			else:
+				sprite.modulate.a=1
+				sounder.volume_db=0
 				$AnimationPlayer.play("sleep")
 				cry=0
 				sounder.stop()
