@@ -143,7 +143,6 @@ func plantGetSin(x):
 	return getSin(grid[x].color)
 
 func plantGetSinName(x):
-	print("get name "+str(x))
 	return sinsIndex[grid[x].color]
 
 func pointToGrid(x):
@@ -171,7 +170,6 @@ func gridHas(x):
 
 func gridSet(x,what):
 	if not gridHas(x):
-		print("set")
 		grid[x]=what
 		what.index=x
 		stickToGrid(x)
@@ -187,7 +185,6 @@ func gridTake(x):
 	return null
 
 func createPlant(x):
-	print(plant)
 	if plant!=null:
 		var newPlant=plant.instance()
 		add_child(newPlant)
@@ -195,12 +192,12 @@ func createPlant(x):
 		newPlant.game=self
 		gridSet(x,newPlant)
 		newPlant.position.y=plantedHeight
-		print("index "+str(newPlant.index))
 		newPlant.color=rng.randi()%7
+		while newPlant.color==soilColor[x]:
+			newPlant.color=rng.randi()%7	
 		newPlant.sprite.texture=sins[sinsIndex[newPlant.color]]["texture"]
 		newPlant.sounder.stream=sins[sinsIndex[newPlant.color]]["sound"]
 		newPlant.sounder.bus="master"
-		print(sins[sinsIndex[newPlant.color]])
 		return newPlant
 	return null
 
