@@ -70,7 +70,6 @@ func _process(delta):
 					cry+=delta
 					if cry>timeToCry:
 						crying=true
-						print(sounder.stream)
 						sounder.play()
 				else:
 					position.x=(game.rng.randi()%10)-5
@@ -79,11 +78,21 @@ func _process(delta):
 						death+=delta
 						if death>=timeToDie:
 							dying=true
+							game.plantDecay.emitting=true
+							game.plantDecay.position=Vector2(0,16)
+							game.plantDecay.modulate=plantGetSin()["color"]
+							game.remove_child(game.plantDecay)
+							add_child(game.plantDecay)
+							game.plantDecay.set_owner(self)
+							
 					else:
 						decay+=delta
 						if decay>=timeToDecay:
 							decay=timeToDecay
 							dead=true
+							remove_child(game.plantDecay)
+							game.add_child(game.plantDecay)
+							game.plantDecay.set_owner(game)
 						sprite.modulate.a=1-(decay/timeToDecay)
 						sounder.volume_db=-decay/timeToDecay*25
 			else:

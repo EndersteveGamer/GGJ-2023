@@ -71,7 +71,6 @@ func grab():
 				uproot.game.remove_child(uproot)
 				grabbed.add_child(uproot)
 				inHand=false
-				# uproot.visible=false
 				owner.gridTake(uproot.index)
 				if touched==uproot:
 					touched=second
@@ -143,21 +142,15 @@ func playerUproot(delta):
 				owner.getDirtBury().position = uproot.position
 				owner.getDirtBury().emitting = true
 				owner.shakeCamera(0.25, 2)
-				#grabbed.texture=uproot.sprite.texture
-				#grabbed.modulate=plantGetSin(uproot.index)["color"]
-				#grabbed.add_child(uproot)
-				print("uproot is "+str(uproot.game))
 				uproot.game.remove_child(uproot)
 				grabbed.add_child(uproot)
 				uproot.position.x=0
 				uproot.position.y=0
 				uproot.set_owner(grabbed)
 				inHand=true
-				#uproot.visible=true
 				owner.gridTake(uproot.index)
 				uproot.soil=false
 				uproot.get_node("AnimationPlayer").play("cry")
-				#grabbed.texture=uproot.texture
 	move_and_slide(deltaSpeed)
 
 func playerPlant(delta):
@@ -202,7 +195,6 @@ func playerPlant(delta):
 					owner.endGame()
 				return
 		else:
-			# uproot.visible=true
 			remove_child(uproot)
 			owner.add_child(uproot)
 			uproot.set_owner(owner)
@@ -213,6 +205,11 @@ func playerPlant(delta):
 			
 			owner.getDirtBury().position = uproot.position
 			owner.getDirtBury().emitting = true
+			
+			owner.plantDecay.emitting=false
+			grabbed.remove_child(owner.plantDecay)
+			owner.add_child(owner.plantDecay)
+			owner.plantDecay.set_owner(owner)
 			
 			if plantGetSinName(uproot)=="gluttony":
 				if not uproot.grown:
@@ -252,6 +249,12 @@ func _physics_process(delta):
 	if uproot!=null:
 		if uproot.dead:
 			remove_child(uproot)
+			
+			owner.plantDecay.emitting=false
+			grabbed.remove_child(owner.plantDecay)
+			owner.add_child(owner.plantDecay)
+			owner.plantDecay.set_owner(owner)
+			
 			uproot.queue_free()
 			grabbed.texture=null
 			uproot=null
@@ -276,12 +279,6 @@ func _physics_process(delta):
 		position.x=terrainMin
 	if position.x>terrainMax:
 		position.x=terrainMax
-	if uproot:
-		print(uproot.owner)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 func _on_Grab_area_entered(area):
 	if area.visible:

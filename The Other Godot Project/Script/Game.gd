@@ -46,6 +46,7 @@ var shakeStrength : float = 0
 
 onready var dirtBury = $DirtBury
 onready var unlockParticles = $UnlockParticles
+onready var plantDecay = $PlantDecay
 
 func getDirtBury():
 	return dirtBury
