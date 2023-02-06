@@ -29,8 +29,10 @@ var envySound=preload("res://Sound/envy.ogg")
 var slothSound=preload("res://Sound/sloth.ogg")
 var lustSound=preload("res://Sound/lust.ogg")
 
-onready var progressDisplay = $CanvasLayer/TextureProgress
+var music=[preload("res://Sound/level 1.ogg"),preload("res://Sound/level 2.ogg"),preload("res://Sound/level 3.ogg")]
 
+onready var progressDisplay = $CanvasLayer/TextureProgress
+onready var musicer=$Musicer
 onready var rng=RandomNumberGenerator.new()
 
 export var plantSpawndBase=20
@@ -199,6 +201,9 @@ func createPlant(x):
 		newPlant.sprite.texture=sins[sinsIndex[newPlant.color]]["texture"]
 		newPlant.sounder.stream=sins[sinsIndex[newPlant.color]]["sound"]
 		newPlant.sounder.bus="master"
+		newPlant.generator=plantDecay.duplicate()
+		newPlant.add_child(newPlant.generator)
+		newPlant.generator.emitting=false
 		return newPlant
 	return null
 
@@ -227,6 +232,8 @@ func createSoil(x):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	musicer.stream=music[0]
+	musicer.play()
 	grid.resize(gridSize)
 	soilColor.resize(gridSize)
 	rng.randomize()
@@ -249,7 +256,7 @@ func _process(delta):
 		if getPlantsNum() <= tiles / 2:
 			spawnPlantRandom()
 		plantSpawnTimer-=plantSpawnCurrent
-		plantSpawnCurrent *= 0.9
+		plantSpawnCurrent *= 1.1
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
 	progressDisplay.value = tiles - 14
 	if timeLeftToShake > 0:

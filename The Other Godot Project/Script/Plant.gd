@@ -12,6 +12,7 @@ var dying=false
 var decay=0
 var dead=false
 onready var sounder=$Sounder
+var generator
 # time in seconds
 export var timeToGrow=30
 export var timeToDecay=5
@@ -78,21 +79,15 @@ func _process(delta):
 						death+=delta
 						if death>=timeToDie:
 							dying=true
-							game.plantDecay.emitting=true
-							game.plantDecay.position=Vector2(0,16)
-							game.plantDecay.modulate=plantGetSin()["color"]
-							game.remove_child(game.plantDecay)
-							add_child(game.plantDecay)
-							game.plantDecay.set_owner(self)
+							generator.emitting=true
+							generator.position=Vector2(0,16)
+							generator.modulate=plantGetSin()["color"]
 							
 					else:
 						decay+=delta
 						if decay>=timeToDecay:
 							decay=timeToDecay
 							dead=true
-							remove_child(game.plantDecay)
-							game.add_child(game.plantDecay)
-							game.plantDecay.set_owner(game)
 						sprite.modulate.a=1-(decay/timeToDecay)
 						sounder.volume_db=-decay/timeToDecay*25
 			else:

@@ -19,7 +19,6 @@ export var timeToPlant=0.5
 
 var inHand=false
 
-var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
 var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
 var idle=preload("res://Sprite/idle.png")
 var run=preload("res://Sprite/run.png")
@@ -169,12 +168,7 @@ func playerPlant(delta):
 		sprite.hframes=6
 		animator.play("idle")
 		if uproot.grown:
-				owner.plantDecay.emitting=false
-				grabbed.remove_child(owner.plantDecay)
-				owner.add_child(owner.plantDecay)
-				owner.plantDecay.set_owner(owner)
-
-				uproot.queue_free()
+				uproot.call_deferred("queue_free")
 				owner.tiles+=1
 				if index==owner.start:
 					owner.start-=1
@@ -195,7 +189,19 @@ func playerPlant(delta):
 								owner.grid[i].growth+2
 				uproot=null
 				grabbed.texture=null
-				owner.plantSpawnCurrent+=owner.plantSpawnDecrement
+				owner.plantSpawnCurrent-=owner.plantSpawnDecrement
+				var tiles=owner.tiles-owner.startingTiles
+				var thirdVictory=(owner.victory-owner.startingTiles)/3
+				if tiles>thirdVictory:
+					if owner.musicer.stream==owner.music[0]:
+						var from=owner.musicer.get_playback_position()
+						owner.musicer.stream=owner.music[1]
+						owner.musicer.play(from)
+				if tiles>thirdVictory*2:
+					if owner.musicer.stream==owner.music[1]:
+						var from=owner.musicer.get_playback_position()
+						owner.musicer.stream=owner.music[2]
+						owner.musicer.play(from)
 				if owner.tiles >= owner.victory:
 					owner.endGame()
 				return
@@ -211,10 +217,7 @@ func playerPlant(delta):
 			owner.getDirtBury().position = uproot.position
 			owner.getDirtBury().emitting = true
 			
-			owner.plantDecay.emitting=false
-			grabbed.remove_child(owner.plantDecay)
-			owner.add_child(owner.plantDecay)
-			owner.plantDecay.set_owner(owner)
+			uproot.generator.emitting=false
 			
 			if plantGetSinName(uproot)=="gluttony":
 				if not uproot.grown:
@@ -254,11 +257,6 @@ func _physics_process(delta):
 	if uproot!=null:
 		if uproot.dead:
 			remove_child(uproot)
-			
-			owner.plantDecay.emitting=false
-			grabbed.remove_child(owner.plantDecay)
-			owner.add_child(owner.plantDecay)
-			owner.plantDecay.set_owner(owner)
 			
 			uproot.queue_free()
 			grabbed.texture=null
