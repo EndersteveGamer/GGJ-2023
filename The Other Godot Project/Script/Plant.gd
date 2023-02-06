@@ -11,7 +11,8 @@ var death=0
 var dying=false
 var decay=0
 var dead=false
-var audioManager
+onready var sounder=$Sounder
+var generator
 # time in seconds
 export var timeToGrow=30
 export var timeToDecay=5
@@ -20,67 +21,81 @@ export var timeToDie=5
 
 var soundCry=preload("res://Sound/Scream.ogg")
 var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
-
+onready var sprite=get_node("Sprite")
 onready var fruit=get_node("Fruit")
+onready var game=owner
 
 func plantGetSinName():
-	return owner.sinsIndex[color]
+	return game.sinsIndex[color]
 
 func plantGetSin():
-	return owner.sins[plantGetSinName()]
+	return game.sins[plantGetSinName()]
 
 func _process(delta):
 	if not dead:
 		if not grown:
 			if soil:
-				var plant1 = owner.grid[index - 1]
-				var plant2 = owner.grid[index + 1]
+				var plant1 = game.grid[index - 1]
+				var plant2 = game.grid[index + 1]
 				if (plant1 != null && plant1.plantGetSinName() == "wrath") || (plant2 != null && plant2.plantGetSinName() == "wrath"):
 					growth += delta / 2
 				else:
 					growth+=delta
-				if owner.grid[index].plantGetSinName() == "pride":
+				if game.grid[index].plantGetSinName() == "pride":
 					if (plant1 != null && plant1.growth < growth) || (plant2 != null && plant2.growth < growth):
 						growth += delta
-				if owner.grid[index].plantGetSinName() == "envy":
+				if game.grid[index].plantGetSinName() == "envy":
 					if (plant1 != null && plant1.growth > growth) || (plant2 != null && plant2.growth > growth):
 						growth += delta
 				if growth>=timeToGrow:
 					grown=true
-					growth==timeToGrow
+					growth=timeToGrow
 					fruit.texture=fruitSprite
-					fruit.modulate=owner.getSinColorCode(color)
+					fruit.modulate=game.getSinColorCode(color)
 					fruit.z_index = -1
 				if plantGetSinName()=="lust":
-					if owner.grid[index-1]==null:
-						if owner.grid[index+1]!=null:
-							owner.createPlant(index-1).color=owner.grid[index+1].color
+					if game.grid[index-1]==null:
+						if game.grid[index+1]!=null:
+							game.createPlant(index-1).color=game.grid[index+1].color
 					else:
-						if owner.grid[index-1]!=null:
-							owner.createPlant(index+1).color=owner.grid[index-1].color
+						if game.grid[index-1]!=null:
+							game.createPlant(index+1).color=game.grid[index-1].color
 				if plantGetSinName()=="sloth":
 					growth+=delta/2
-					if owner.grid[index-1]!=null :
+					if game.grid[index-1]!=null :
 							growth-=delta/4
-					if owner.grid[index+1]!=null :
+					if game.grid[index+1]!=null :
 							growth-=delta/4
 			if index==-1:
 				if not crying:
 					cry+=delta
 					if cry>timeToCry:
 						crying=true
-						audioManager.play(soundCry,position)
+						sounder.play()
 				else:
+					position.x=(game.rng.randi()%10)-5
+					position.y=(game.rng.randi()%10)-5
 					if not dying:
 						death+=delta
 						if death>=timeToDie:
 							dying=true
+							generator.emitting=true
+							generator.position=Vector2(0,16)
+							generator.modulate=plantGetSin()["color"]
+							
 					else:
 						decay+=delta
 						if decay>=timeToDecay:
+							decay=timeToDecay
 							dead=true
+						sprite.modulate.a=1-(decay/timeToDecay)
+						sounder.volume_db=-decay/timeToDecay*25
 			else:
+				sprite.modulate.a=1
+				sounder.volume_db=0
+				$AnimationPlayer.play("sleep")
 				cry=0
+				sounder.stop()
 				crying=false
 				death=0
 				dying=false

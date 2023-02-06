@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/sloth.ogg-fcfa1032575663820b646dbce72afe56.oggstr"
+
+[deps]
+
+source_file="res://Sound/sloth.ogg"
+dest_files=[ "res://.import/sloth.ogg-fcfa1032575663820b646dbce72afe56.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Plantier plant of the 80s.png-5ac9b69ceea157cf9b4877c9116fffd9.stex"
+path="res://.import/lust.png-f16d4a17da6b2fb5a31e9f84c34dc7a5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprite/Plantier plant of the 80s.png"
-dest_files=[ "res://.import/Plantier plant of the 80s.png-5ac9b69ceea157cf9b4877c9116fffd9.stex" ]
+source_file="res://Sprite/lust.png"
+dest_files=[ "res://.import/lust.png-f16d4a17da6b2fb5a31e9f84c34dc7a5.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

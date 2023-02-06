@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/gluttony.ogg-4fd82f36ce03ddb2eaf5179f86f8c2d6.oggstr"
+
+[deps]
+
+source_file="res://Sound/gluttony.ogg"
+dest_files=[ "res://.import/gluttony.ogg-4fd82f36ce03ddb2eaf5179f86f8c2d6.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

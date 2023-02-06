@@ -27,7 +27,7 @@ tracks/1/path = NodePath("Sprite:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -39,7 +39,7 @@ tracks/2/path = NodePath("Sprite:hframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -78,7 +78,7 @@ tracks/1/path = NodePath("Sprite:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -90,7 +90,7 @@ tracks/2/path = NodePath("Sprite:texture")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -122,7 +122,7 @@ tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 0, 0, 0, 0, 1, 0, 0, 0, 0 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "update": 0,
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
 }
@@ -143,7 +143,7 @@ tracks/2/path = NodePath("Sprite:hframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -155,7 +155,7 @@ tracks/3/path = NodePath("Sprite:texture")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
-tracks/3/enabled = true
+tracks/3/enabled = false
 tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -183,7 +183,7 @@ tracks/1/path = NodePath("Sprite:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -195,10 +195,10 @@ tracks/2/path = NodePath("Sprite:hframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 0 ),
 "update": 1,
 "values": [ 6 ]
 }
@@ -223,8 +223,7 @@ position = Vector2( 0, -16 )
 scale = Vector2( 0.5, 0.5 )
 z_index = 1
 texture = ExtResource( 1 )
-hframes = 5
-frame = 4
+hframes = 6
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 visible = false
@@ -233,12 +232,10 @@ shape = SubResource( 1 )
 [node name="Grab" type="Area2D" parent="."]
 
 [node name="Grabbox" type="CollisionShape2D" parent="Grab"]
-visible = false
 shape = SubResource( 1 )
 
 [node name="Grabbed" type="Sprite" parent="Grab"]
-position = Vector2( 20, 28 )
-scale = Vector2( 4, 4 )
+position = Vector2( 20, -40 )
 z_index = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -246,6 +243,8 @@ anims/idle = SubResource( 2 )
 anims/plant = SubResource( 5 )
 anims/run = SubResource( 3 )
 anims/uproot = SubResource( 4 )
+
+[node name="Sounder" type="AudioStreamPlayer" parent="."]
 
 [connection signal="area_entered" from="Grab" to="." method="_on_Grab_area_entered"]
 [connection signal="area_exited" from="Grab" to="." method="_on_Grab_area_exited"]

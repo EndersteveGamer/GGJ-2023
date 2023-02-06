@@ -2,6 +2,7 @@ extends Node2D
 
 var grid=[]
 var soilColor=[]
+var soilNode=[]
 var gridSize=128 # number of case
 var gridWidth=64 # width of each case
 var startingTiles : int =14
@@ -11,8 +12,28 @@ var start=(gridSize-startingTiles)/2
 onready var plant=preload("res://Scene/Plant.tscn")
 onready var soil=preload("res://Scene/Soil.tscn")
 
-onready var progressDisplay = $CanvasLayer/TextureProgress
+export var plantedHeight=48
 
+var sloth=preload("res://Sprite/sloth.png")
+var greed=preload("res://Sprite/greed.png")
+var pride=preload("res://Sprite/pride.png")
+var gluttony=preload("res://Sprite/gluttony.png")
+var envy=preload("res://Sprite/envy.png")
+var wrath=preload("res://Sprite/wrath.png")
+var lust=preload("res://Sprite/lust.png")
+
+var wrathSound=preload("res://Sound/wrath.ogg")
+var greedSound=preload("res://Sound/greed.ogg")
+var prideSound=preload("res://Sound/pride.ogg")
+var gluttonySound=preload("res://Sound/gluttony.ogg")
+var envySound=preload("res://Sound/envy.ogg")
+var slothSound=preload("res://Sound/sloth.ogg")
+var lustSound=preload("res://Sound/lust.ogg")
+
+var music=[preload("res://Sound/level 1.ogg"),preload("res://Sound/level 2.ogg"),preload("res://Sound/level 3.ogg")]
+
+onready var progressDisplay = $CanvasLayer/TextureProgress
+onready var musicer=$Musicer
 onready var rng=RandomNumberGenerator.new()
 
 export var plantSpawndBase=20
@@ -28,6 +49,7 @@ var shakeStrength : float = 0
 
 onready var dirtBury = $DirtBury
 onready var unlockParticles = $UnlockParticles
+onready var plantDecay = $PlantDecay
 
 func getDirtBury():
 	return dirtBury
@@ -53,43 +75,57 @@ var sins={
 	{
 		"index":0,
 		"color":Color(1,0,0),
-		"desc":"Reduces nearby progression, but have a progression addition when a new plant appears next by"
+		"desc":"Reduces nearby progression, but have a progression addition when a new plant appears next by",
+		"texture":wrath,
+		"sound":wrathSound
 	},
 	"envy":
 	{
 		"index":1,
 		"color":Color(1,0.5,0),
-		"desc":"Grow faster when nearby plants are further ahead"
+		"desc":"Grow faster when nearby plants are further ahead",
+		"texture":envy,
+		"sound":envySound
 	},
 	"lust":
 	{
 		"index":2,
 		"color":Color(1,0,1),
-		"desc":"When grown, will clone the nearby plant to the other side if there's space"
+		"desc":"When grown, will clone the nearby plant to the other side if there's space",
+		"texture":lust,
+		"sound":lustSound
 	},
 	"sloth":
 	{
 		"index":3,
 		"color":Color(0.5,0.5,0.5),
-		"desc":"Grows faster if there's no plants to the sides"
+		"desc":"Grows faster if there's no plants to the sides",
+		"texture":sloth,
+		"sound":slothSound
 	},
 	"greed":
 	{
 		"index":4,
 		"color":Color(1,1,0),
-		"desc":"When used to grow the road, will add a bit progression to all but greed plants"
+		"desc":"When used to grow the road, will add a bit progression to all but greed plants",
+		"texture":greed,
+		"sound":greedSound
 	},
 	"gluttony":
 	{
 		"index":5,
 		"color":Color(0,1,0),
-		"desc":"Steals part of nearby progression when placed"
+		"desc":"Steals part of nearby progression when placed",
+		"texture":gluttony,
+		"sound":gluttonySound
 	},
 	"pride":
 	{
 		"index":6,
 		"color":Color(0,0.5,1),
-		"desc":"Grows faster if it's ahead of the other plants"
+		"desc":"Grows faster if it's ahead of the other plants",
+		"texture":pride,
+		"sound":prideSound
 	}
 }
 
@@ -114,7 +150,6 @@ func plantGetSin(x):
 		return getSin(grid[x].color)
 
 func plantGetSinName(x):
-	print("get name "+str(x))
 	return sinsIndex[grid[x].color]
 
 func pointToGrid(x):
@@ -129,6 +164,7 @@ func gridStick(what):
 
 func gridStickFromIndex(what):
 	what.position.x=gridToPoint(what.index)
+	what.position.y=plantedHeight
 
 func stickToGrid(x):
 	gridStickFromIndex(gridGet(x))
@@ -141,7 +177,6 @@ func gridHas(x):
 
 func gridSet(x,what):
 	if not gridHas(x):
-		print("set")
 		grid[x]=what
 		what.index=x
 		stickToGrid(x)
@@ -157,16 +192,22 @@ func gridTake(x):
 	return null
 
 func createPlant(x):
-	print(plant)
 	if plant!=null:
 		var newPlant=plant.instance()
 		add_child(newPlant)
 		newPlant.owner=self
+		newPlant.game=self
 		gridSet(x,newPlant)
-		newPlant.position.y+=32
-		print("index "+str(newPlant.index))
-		newPlant.audioManager=get_node("AudioManager")
+		newPlant.position.y=plantedHeight
 		newPlant.color=rng.randi()%7
+		while newPlant.color==soilColor[x]:
+			newPlant.color=rng.randi()%7	
+		newPlant.sprite.texture=sins[sinsIndex[newPlant.color]]["texture"]
+		newPlant.sounder.stream=sins[sinsIndex[newPlant.color]]["sound"]
+		newPlant.sounder.bus="master"
+		newPlant.generator=plantDecay.duplicate()
+		newPlant.add_child(newPlant.generator)
+		newPlant.generator.emitting=false
 		return newPlant
 	return null
 
@@ -192,11 +233,15 @@ func createSoil(x):
 	newSoil.scale.y=2
 	add_child(newSoil)
 	newSoil.position.x=gridToPoint(x)
+	soilNode[x]=newSoil
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	musicer.stream=music[0]
+	musicer.play()
 	grid.resize(gridSize)
 	soilColor.resize(gridSize)
+	soilNode.resize(gridSize)
 	rng.randomize()
 	spawnPlantRandom() # Replace with function body.
 	var leftColor=[2,2,2,2,2,2,2]
@@ -217,7 +262,7 @@ func _process(delta):
 		if getPlantsNum() <= tiles / 2:
 			spawnPlantRandom()
 		plantSpawnTimer-=plantSpawnCurrent
-		plantSpawnCurrent *= 0.9
+		plantSpawnCurrent *= 1.1
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
 	progressDisplay.value = tiles - 14
 	if timeLeftToShake > 0:

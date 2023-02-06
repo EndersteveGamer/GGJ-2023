@@ -17,12 +17,19 @@ export var timeToUproot=0.7
 var planting=0
 export var timeToPlant=0.5
 
-var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
-var fruitSprte=preload("res://Sprite/Other Fruit of the 80s.png")
+var inHand=false
+
+var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
 var idle=preload("res://Sprite/idle.png")
 var run=preload("res://Sprite/run.png")
 var uprootAnimation=preload("res://Sprite/uproot.png")
 var plantAnimation=preload("res://Sprite/plant.png")
+var uprootSound=preload("res://Sound/uproot.ogg")
+var plantSound=preload("res://Sound/plant.ogg")
+
+var previousTouched=-1
+
+onready var sounder=$Sounder
 var index=0
 
 func _ready():
@@ -44,6 +51,34 @@ func plantGetCloser(grown=false):
 			return second
 		return touched
 	return null
+	
+func selectedLoop():
+	if uproot!=null:
+		if previousTouched==-1:
+			previousTouched=index
+			owner.soilNode[previousTouched].modulate.a=0.75
+		if index!=previousTouched:
+			if owner.gridGet(index)==null:
+				owner.soilNode[previousTouched].modulate.a=0.5
+				owner.soilNode[index].modulate.a=0.75
+			previousTouched=index
+	else:
+		if previousTouched!=-1:
+			owner.soilNode[previousTouched].modulate.a=0.5
+			previousTouched=-1
+		if touched!=null:
+			if previousTouched==-1:
+				previousTouched=touched.index
+				if owner.gridGet(previousTouched)!=null:
+					owner.gridGet(previousTouched).sprite.modulate.a=0.75
+			if touched.index!=previousTouched:
+				owner.gridGet(previousTouched).sprite.modulate.a=0.5
+				touched.sprite.modulate.a=0.75
+				previousTouched=touched.index
+		else:
+			if previousTouched!=-1:
+				owner.gridGet(previousTouched).sprite.modulate.a=0.5
+				previousTouched=-1
 
 # The closest plant will be grabed
 # Skipped if the rat already have a plant
@@ -51,8 +86,11 @@ func grab():
 	if uproot==null:
 		uproot=plantGetCloser()
 		if uproot!=null:
+			grabbed.modulate=Color(1,1,1,1)
+			grabbed.scale=Vector2(1,1)
 			if uprooting==0:
 				uprooting=0.001
+				inHand=false
 				if touched==uproot:
 					touched=second
 				else:
@@ -60,11 +98,12 @@ func grab():
 		else:
 			uproot=plantGetCloser(true)
 			if uproot!=null:
-				grabbed.texture=fruitSprte
+				grabbed.texture=fruitSprite
 				grabbed.modulate=owner.getSin(uproot.color)["color"]
-				uproot.owner.remove_child(uproot)
-				add_child(uproot)
-				uproot.visible=false
+				grabbed.scale=Vector2(2,2)
+				uproot.game.remove_child(uproot)
+				grabbed.add_child(uproot)
+				inHand=false
 				owner.gridTake(uproot.index)
 				if touched==uproot:
 					touched=second
@@ -132,31 +171,42 @@ func playerUproot(delta):
 		sprite.hframes=6
 		animator.play("uproot")
 		if uprooting>0.5:
-			if uproot.visible:
+			if !inHand:
 				owner.getDirtBury().position = uproot.position
 				owner.getDirtBury().emitting = true
 				owner.shakeCamera(0.25, 2)
-				grabbed.texture=plantGray
-				grabbed.modulate=plantGetSin(uproot.index)["color"]
-				uproot.owner.remove_child(uproot)
-				add_child(uproot)
-				uproot.visible=false
+				uproot.game.remove_child(uproot)
+				grabbed.add_child(uproot)
+				uproot.position.x=0
+				uproot.position.y=0
+				uproot.set_owner(grabbed)
+				inHand=true
 				owner.gridTake(uproot.index)
 				uproot.soil=false
+				uproot.get_node("AnimationPlayer").play("cry")
+				sounder.stream=uprootSound
+				sounder.play()
+				previousTouched=index
+				owner.soilNode[index].modulate.a=0.75
 	move_and_slide(deltaSpeed)
 
 func playerPlant(delta):
 	planting+=delta
 	deltaSpeed.x*=deceleration
-	print(str(planting))
 	if planting>timeToPlant:
+		# the plant is back in the ground
+		inHand=false
 		owner.shakeCamera(0.25, 2)
+		if uproot==null:
+			return
+		grabbed.remove_child(uproot)
+		uproot.get_node("AnimationPlayer").play("sleep")
 		planting=0
 		sprite.texture=idle
 		sprite.hframes=6
 		animator.play("idle")
 		if uproot.grown:
-				uproot.queue_free()
+				uproot.call_deferred("queue_free")
 				owner.tiles+=1
 				if index==owner.start:
 					owner.start-=1
@@ -177,21 +227,35 @@ func playerPlant(delta):
 								owner.grid[i].growth+2
 				uproot=null
 				grabbed.texture=null
-				owner.plantSpawnCurrent+=owner.plantSpawnDecrement
+				owner.plantSpawnCurrent-=owner.plantSpawnDecrement
+				var tiles=owner.tiles-owner.startingTiles
+				var thirdVictory=(owner.victory-owner.startingTiles)/3
+				if tiles>thirdVictory:
+					if owner.musicer.stream==owner.music[0]:
+						var from=owner.musicer.get_playback_position()
+						owner.musicer.stream=owner.music[1]
+						owner.musicer.play(from)
+				if tiles>thirdVictory*2:
+					if owner.musicer.stream==owner.music[1]:
+						var from=owner.musicer.get_playback_position()
+						owner.musicer.stream=owner.music[2]
+						owner.musicer.play(from)
 				if owner.tiles >= owner.victory:
 					owner.endGame()
 				return
 		else:
-			uproot.visible=true
 			remove_child(uproot)
 			owner.add_child(uproot)
 			uproot.set_owner(owner)
+			uproot.get_node("AnimationPlayer").play("sleep")
 			owner.gridSet(index,uproot)
 			owner.gridStick(uproot)
 			grabbed.texture=null
 			
 			owner.getDirtBury().position = uproot.position
 			owner.getDirtBury().emitting = true
+			
+			uproot.generator.emitting=false
 			
 			if plantGetSinName(uproot)=="gluttony":
 				if not uproot.grown:
@@ -221,24 +285,27 @@ func playerPlant(delta):
 							uproot.growth+=steal
 			if owner.soilColor[uproot.index]==uproot.color:
 				uproot.soil=true
+			touched=uproot
 			uproot=null
+			sounder.stream=plantSound
+			sounder.play()
 	else:
 		sprite.texture=plantAnimation
 		sprite.hframes=5
 		animator.play("plant")
-		print("play")
 
 func _physics_process(delta):
 	if uproot!=null:
 		if uproot.dead:
 			remove_child(uproot)
+			
 			uproot.queue_free()
 			grabbed.texture=null
 			uproot=null
 	if uprooting>0:
 		playerUproot(delta)
 	else:
-		if planting>0:
+		if planting>0 and uproot!=null:
 			playerPlant(delta)
 		else:
 			if abs(deltaSpeed.x)>0.1:
@@ -256,10 +323,7 @@ func _physics_process(delta):
 		position.x=terrainMin
 	if position.x>terrainMax:
 		position.x=terrainMax
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+	selectedLoop()
 
 func _on_Grab_area_entered(area):
 	if area.visible:

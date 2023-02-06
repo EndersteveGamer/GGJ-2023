@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Side Rat.png-04bd1febe5a6086d3cc13cccb2a022e7.stex"
+path="res://.import/greed.png-4875725a9e2408629f847a9152c60da9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprite/Side Rat.png"
-dest_files=[ "res://.import/Side Rat.png-04bd1febe5a6086d3cc13cccb2a022e7.stex" ]
+source_file="res://Sprite/greed.png"
+dest_files=[ "res://.import/greed.png-4875725a9e2408629f847a9152c60da9.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
