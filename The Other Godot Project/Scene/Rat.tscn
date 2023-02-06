@@ -244,5 +244,7 @@ anims/plant = SubResource( 5 )
 anims/run = SubResource( 3 )
 anims/uproot = SubResource( 4 )
 
+[node name="Sounder" type="AudioStreamPlayer" parent="."]
+
 [connection signal="area_entered" from="Grab" to="." method="_on_Grab_area_entered"]
 [connection signal="area_exited" from="Grab" to="." method="_on_Grab_area_exited"]

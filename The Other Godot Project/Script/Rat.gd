@@ -24,6 +24,10 @@ var idle=preload("res://Sprite/idle.png")
 var run=preload("res://Sprite/run.png")
 var uprootAnimation=preload("res://Sprite/uproot.png")
 var plantAnimation=preload("res://Sprite/plant.png")
+var uprootSound=preload("res://Sound/uproot.ogg")
+var plantSound=preload("res://Sound/plant.ogg")
+
+onready var sounder=$Sounder
 var index=0
 
 func _ready():
@@ -150,6 +154,8 @@ func playerUproot(delta):
 				owner.gridTake(uproot.index)
 				uproot.soil=false
 				uproot.get_node("AnimationPlayer").play("cry")
+				sounder.stream=uprootSound
+				sounder.play()
 	move_and_slide(deltaSpeed)
 
 func playerPlant(delta):
@@ -248,6 +254,8 @@ func playerPlant(delta):
 			if owner.soilColor[uproot.index]==uproot.color:
 				uproot.soil=true
 			uproot=null
+			sounder.stream=plantSound
+			sounder.play()
 	else:
 		sprite.texture=plantAnimation
 		sprite.hframes=5
