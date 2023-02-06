@@ -56,17 +56,28 @@ func selectedLoop():
 	if uproot!=null:
 		if previousTouched==-1:
 			previousTouched=index
+			owner.soilNode[previousTouched].modulate.a=0.75
 		if index!=previousTouched:
 			if owner.gridGet(index)==null:
-				owner.soilNode[previousTouched].modulate=owner.getSinColorCode(owner.soilColor[previousTouched])
 				owner.soilNode[previousTouched].modulate.a=0.5
-				owner.soilNode[index].modulate=Color(1.5,1.5,1.5,0.5)
+				owner.soilNode[index].modulate.a=0.75
 			previousTouched=index
 	else:
 		if previousTouched!=-1:
-			owner.soilNode[previousTouched].modulate=owner.getSinColorCode(owner.soilColor[previousTouched])
 			owner.soilNode[previousTouched].modulate.a=0.5
 			previousTouched=-1
+		if touched!=null:
+			if previousTouched==-1:
+				previousTouched=touched.index
+				owner.gridGet(previousTouched).sprite.modulate.a=0.75
+			if touched.index!=previousTouched:
+				owner.gridGet(previousTouched).sprite.modulate.a=0.5
+				touched.sprite.modulate.a=0.75
+				previousTouched=touched.index
+		else:
+			if previousTouched!=-1:
+				owner.gridGet(previousTouched).sprite.modulate.a=0.5
+				previousTouched=-1
 
 # The closest plant will be grabed
 # Skipped if the rat already have a plant
@@ -174,6 +185,8 @@ func playerUproot(delta):
 				uproot.get_node("AnimationPlayer").play("cry")
 				sounder.stream=uprootSound
 				sounder.play()
+				previousTouched=index
+				owner.soilNode[index].modulate.a=0.75
 	move_and_slide(deltaSpeed)
 
 func playerPlant(delta):
@@ -271,6 +284,7 @@ func playerPlant(delta):
 							uproot.growth+=steal
 			if owner.soilColor[uproot.index]==uproot.color:
 				uproot.soil=true
+			touched=uproot
 			uproot=null
 			sounder.stream=plantSound
 			sounder.play()
