@@ -169,6 +169,11 @@ func playerPlant(delta):
 		sprite.hframes=6
 		animator.play("idle")
 		if uproot.grown:
+				owner.plantDecay.emitting=false
+				grabbed.remove_child(owner.plantDecay)
+				owner.add_child(owner.plantDecay)
+				owner.plantDecay.set_owner(owner)
+
 				uproot.queue_free()
 				owner.tiles+=1
 				if index==owner.start:
@@ -261,7 +266,7 @@ func _physics_process(delta):
 	if uprooting>0:
 		playerUproot(delta)
 	else:
-		if planting>0:
+		if planting>0 and uproot!=null:
 			playerPlant(delta)
 		else:
 			if abs(deltaSpeed.x)>0.1:
