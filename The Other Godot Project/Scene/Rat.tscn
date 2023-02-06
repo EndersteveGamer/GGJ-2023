@@ -28,7 +28,7 @@ tracks/1/path = NodePath("Sprite:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -40,7 +40,7 @@ tracks/2/path = NodePath("Sprite:hframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -79,7 +79,7 @@ tracks/1/path = NodePath("Sprite:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -91,7 +91,7 @@ tracks/2/path = NodePath("Sprite:texture")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -184,7 +184,7 @@ tracks/1/path = NodePath("Sprite:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 0 ),
@@ -196,10 +196,10 @@ tracks/2/path = NodePath("Sprite:hframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 0 ),
 "update": 1,
 "values": [ 6 ]
 }
@@ -224,7 +224,7 @@ position = Vector2( 0, -16 )
 scale = Vector2( 0.5, 0.5 )
 z_index = 1
 texture = ExtResource( 1 )
-hframes = 9
+hframes = 6
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 visible = false
@@ -237,7 +237,7 @@ visible = false
 shape = SubResource( 1 )
 
 [node name="Grabbed" type="Sprite" parent="Grab"]
-position = Vector2( 36, 0 )
+position = Vector2( 20, -40 )
 scale = Vector2( 0.5, 0.5 )
 z_index = 2
 texture = ExtResource( 3 )

@@ -11,13 +11,21 @@ var start=(gridSize-startingTiles)/2
 onready var plant=preload("res://Scene/Plant.tscn")
 onready var soil=preload("res://Scene/Soil.tscn")
 
-onready var sloth=preload("res://Sprite/sloth.png")
-onready var greed=preload("res://Sprite/greed.png")
-onready var pride=preload("res://Sprite/pride.png")
-onready var gluttony=preload("res://Sprite/gluttony.png")
-onready var envy=preload("res://Sprite/envy.png")
-onready var wrath=preload("res://Sprite/wrath.png")
-onready var lust=preload("res://Sprite/lust.png")
+var sloth=preload("res://Sprite/sloth.png")
+var greed=preload("res://Sprite/greed.png")
+var pride=preload("res://Sprite/pride.png")
+var gluttony=preload("res://Sprite/gluttony.png")
+var envy=preload("res://Sprite/envy.png")
+var wrath=preload("res://Sprite/wrath.png")
+var lust=preload("res://Sprite/lust.png")
+
+var wrathSound=preload("res://Sound/wrath.ogg")
+var greedSound=preload("res://Sound/greed.ogg")
+var prideSound=preload("res://Sound/pride.ogg")
+var gluttonySound=preload("res://Sound/gluttony.ogg")
+var envySound=preload("res://Sound/envy.ogg")
+var slothSound=preload("res://Sound/sloth.ogg")
+var lustSound=preload("res://Sound/lust.ogg")
 
 onready var progressDisplay = $CanvasLayer/TextureProgress
 
@@ -56,55 +64,62 @@ var sinsIndex=[
 	"gluttony",
 	"pride",
 ]
-onready var sins={
+var sins={
 	"wrath":
 	{
 		"index":0,
 		"color":Color(1,0,0),
 		"desc":"Reduces nearby progression, but have a progression addition when a new plant appears next by",
-		"texture":preload("res://Sprite/wrath.png")
+		"texture":wrath,
+		"sound":wrathSound
 	},
 	"envy":
 	{
 		"index":1,
 		"color":Color(1,0.5,0),
 		"desc":"Grow faster when nearby plants are further ahead",
-		"texture":preload("res://Sprite/envy.png")
+		"texture":envy,
+		"sound":envySound
 	},
 	"lust":
 	{
 		"index":2,
 		"color":Color(1,0,1),
 		"desc":"When grown, will clone the nearby plant to the other side if there's space",
-		"texture":preload("res://Sprite/lust.png")
+		"texture":lust,
+		"sound":lustSound
 	},
 	"sloth":
 	{
 		"index":3,
 		"color":Color(0.5,0.5,0.5),
 		"desc":"Grows faster if there's no plants to the sides",
-		"texture":preload("res://Sprite/sloth.png")
+		"texture":sloth,
+		"sound":slothSound
 	},
 	"greed":
 	{
 		"index":4,
 		"color":Color(1,1,0),
 		"desc":"When used to grow the road, will add a bit progression to all but greed plants",
-		"texture":preload("res://Sprite/greed.png")
+		"texture":greed,
+		"sound":greedSound
 	},
 	"gluttony":
 	{
 		"index":5,
 		"color":Color(0,1,0),
 		"desc":"Steals part of nearby progression when placed",
-		"texture":preload("res://Sprite/gluttony.png")
+		"texture":gluttony,
+		"sound":gluttonySound
 	},
 	"pride":
 	{
 		"index":6,
 		"color":Color(0,0.5,1),
 		"desc":"Grows faster if it's ahead of the other plants",
-		"texture":preload("res://Sprite/pride.png")
+		"texture":pride,
+		"sound":prideSound
 	}
 }
 
@@ -174,12 +189,14 @@ func createPlant(x):
 		var newPlant=plant.instance()
 		add_child(newPlant)
 		newPlant.owner=self
+		newPlant.game=self
 		gridSet(x,newPlant)
 		newPlant.position.y+=48
 		print("index "+str(newPlant.index))
-		newPlant.audioManager=get_node("AudioManager")
 		newPlant.color=rng.randi()%7
 		newPlant.sprite.texture=sins[sinsIndex[newPlant.color]]["texture"]
+		newPlant.sounder.stream=sins[sinsIndex[newPlant.color]]["sound"]
+		newPlant.sounder.bus="master"
 		print(sins[sinsIndex[newPlant.color]])
 		return newPlant
 	return null

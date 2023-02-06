@@ -17,10 +17,10 @@ export var timeToUproot=0.7
 var planting=0
 export var timeToPlant=0.5
 
-var showUproot=false
+var inHand=false
 
 var plantGray=preload("res://Sprite/Plantier plant of the 80s.png")
-var fruitSprte=preload("res://Sprite/Other Fruit of the 80s.png")
+var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
 var idle=preload("res://Sprite/idle.png")
 var run=preload("res://Sprite/run.png")
 var uprootAnimation=preload("res://Sprite/uproot.png")
@@ -55,6 +55,7 @@ func grab():
 		if uproot!=null:
 			if uprooting==0:
 				uprooting=0.001
+				inHand=false
 				if touched==uproot:
 					touched=second
 				else:
@@ -62,12 +63,12 @@ func grab():
 		else:
 			uproot=plantGetCloser(true)
 			if uproot!=null:
-				grabbed.texture=fruitSprte
+				grabbed.texture=fruitSprite
 				grabbed.modulate=owner.getSin(uproot.color)["color"]
-				uproot.owner.remove_child(uproot)
+				uproot.game.remove_child(uproot)
 				grabbed.add_child(uproot)
-				showUproot=false
-				uproot.visible=false
+				inHand=false
+				# uproot.visible=false
 				owner.gridTake(uproot.index)
 				if touched==uproot:
 					touched=second
@@ -135,27 +136,29 @@ func playerUproot(delta):
 		sprite.hframes=6
 		animator.play("uproot")
 		if uprooting>0.5:
-			if !showUproot:
+			if !inHand:
 				owner.getDirtBury().position = uproot.position
 				owner.getDirtBury().emitting = true
 				owner.shakeCamera(0.25, 2)
 				#grabbed.texture=uproot.sprite.texture
 				#grabbed.modulate=plantGetSin(uproot.index)["color"]
 				#grabbed.add_child(uproot)
-				print("uproot is "+str(uproot.owner))
-				uproot.owner.remove_child(uproot)
-				showUproot=true
-				uproot.visible=true
+				print("uproot is "+str(uproot.game))
+				uproot.game.remove_child(uproot)
+				get_node("Grab").get_node("Grabbed").add_child(uproot)
+				inHand=true
+				#uproot.visible=true
 				owner.gridTake(uproot.index)
 				uproot.soil=false
 				uproot.get_node("AnimationPlayer").play("cry")
+				#grabbed.texture=uproot.texture
 	move_and_slide(deltaSpeed)
 
 func playerPlant(delta):
 	planting+=delta
 	deltaSpeed.x*=deceleration
-	print(str(planting))
 	if planting>timeToPlant:
+		# the plant is back in the ground
 		owner.shakeCamera(0.25, 2)
 		grabbed.remove_child(uproot)
 		uproot.get_node("AnimationPlayer").play("sleep")
@@ -190,7 +193,7 @@ func playerPlant(delta):
 					owner.endGame()
 				return
 		else:
-			showUproot=true
+			inHand=true
 			uproot.visible=true
 			remove_child(uproot)
 			owner.add_child(uproot)
@@ -236,7 +239,6 @@ func playerPlant(delta):
 		sprite.texture=plantAnimation
 		sprite.hframes=5
 		animator.play("plant")
-		print("play")
 
 func _physics_process(delta):
 	if uproot!=null:
@@ -266,6 +268,7 @@ func _physics_process(delta):
 		position.x=terrainMin
 	if position.x>terrainMax:
 		position.x=terrainMax
+	print(uproot)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
