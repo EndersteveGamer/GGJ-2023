@@ -54,12 +54,13 @@ func _process(delta):
 					fruit.modulate=game.getSinColorCode(color)
 					fruit.z_index = -1
 				if plantGetSinName()=="lust":
-					if game.grid[index-1]==null:
-						if game.grid[index+1]!=null:
-							game.createPlant(index-1).color=game.grid[index+1].color
-					else:
-						if game.grid[index-1]!=null:
-							game.createPlant(index+1).color=game.grid[index-1].color
+					if index>game.start and index<game.start+game.tiles-1:
+						if game.grid[index-1]==null:
+							if game.grid[index+1]!=null:
+								game.createPlant(index-1).color=game.grid[index+1].color
+						else:
+							if game.grid[index-1]!=null:
+								game.createPlant(index+1).color=game.grid[index-1].color
 				if plantGetSinName()=="sloth":
 					growth+=delta/2
 					if game.grid[index-1]!=null :

@@ -212,7 +212,7 @@ func spawnPlantRandom():
 	var x=rng.randi()%tiles+start
 	var threshold=100
 	var i=0
-	while gridHas(x) and x!=get_node("Rat").index:
+	while gridHas(x) and x!=get_node("Player").index:
 		x+=1
 		if x>gridSize:
 			x=0
