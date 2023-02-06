@@ -53,6 +53,7 @@ func grab():
 	if uproot==null:
 		uproot=plantGetCloser()
 		if uproot!=null:
+			grabbed.modulate=Color(1,1,1,1)
 			if uprooting==0:
 				uprooting=0.001
 				inHand=false
@@ -145,7 +146,10 @@ func playerUproot(delta):
 				#grabbed.add_child(uproot)
 				print("uproot is "+str(uproot.game))
 				uproot.game.remove_child(uproot)
-				get_node("Grab").get_node("Grabbed").add_child(uproot)
+				grabbed.add_child(uproot)
+				uproot.position.x=0
+				uproot.position.y=0
+				uproot.set_owner(grabbed)
 				inHand=true
 				#uproot.visible=true
 				owner.gridTake(uproot.index)
@@ -159,6 +163,7 @@ func playerPlant(delta):
 	deltaSpeed.x*=deceleration
 	if planting>timeToPlant:
 		# the plant is back in the ground
+		inHand=false
 		owner.shakeCamera(0.25, 2)
 		grabbed.remove_child(uproot)
 		uproot.get_node("AnimationPlayer").play("sleep")
@@ -193,8 +198,7 @@ func playerPlant(delta):
 					owner.endGame()
 				return
 		else:
-			inHand=true
-			uproot.visible=true
+			# uproot.visible=true
 			remove_child(uproot)
 			owner.add_child(uproot)
 			uproot.set_owner(owner)
@@ -268,7 +272,8 @@ func _physics_process(delta):
 		position.x=terrainMin
 	if position.x>terrainMax:
 		position.x=terrainMax
-	print(uproot)
+	if uproot:
+		print(uproot.owner)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

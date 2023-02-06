@@ -11,6 +11,8 @@ var start=(gridSize-startingTiles)/2
 onready var plant=preload("res://Scene/Plant.tscn")
 onready var soil=preload("res://Scene/Soil.tscn")
 
+export var plantedHeight=48
+
 var sloth=preload("res://Sprite/sloth.png")
 var greed=preload("res://Sprite/greed.png")
 var pride=preload("res://Sprite/pride.png")
@@ -156,6 +158,7 @@ func gridStick(what):
 
 func gridStickFromIndex(what):
 	what.position.x=gridToPoint(what.index)
+	what.position.y=plantedHeight
 
 func stickToGrid(x):
 	gridStickFromIndex(gridGet(x))
@@ -191,7 +194,7 @@ func createPlant(x):
 		newPlant.owner=self
 		newPlant.game=self
 		gridSet(x,newPlant)
-		newPlant.position.y+=48
+		newPlant.position.y=plantedHeight
 		print("index "+str(newPlant.index))
 		newPlant.color=rng.randi()%7
 		newPlant.sprite.texture=sins[sinsIndex[newPlant.color]]["texture"]

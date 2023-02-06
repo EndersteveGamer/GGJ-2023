@@ -73,6 +73,8 @@ func _process(delta):
 						print(sounder.stream)
 						sounder.play()
 				else:
+					position.x=(game.rng.randi()%10)-5
+					position.y=(game.rng.randi()%10)-5
 					if not dying:
 						death+=delta
 						if death>=timeToDie:
