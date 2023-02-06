@@ -2,6 +2,7 @@ extends Node2D
 
 var grid=[]
 var soilColor=[]
+var soilNode=[]
 var gridSize=128 # number of case
 var gridWidth=64 # width of each case
 var startingTiles : int =14
@@ -229,6 +230,7 @@ func createSoil(x):
 	newSoil.scale.y=2
 	add_child(newSoil)
 	newSoil.position.x=gridToPoint(x)
+	soilNode[x]=newSoil
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -236,6 +238,7 @@ func _ready():
 	musicer.play()
 	grid.resize(gridSize)
 	soilColor.resize(gridSize)
+	soilNode.resize(gridSize)
 	rng.randomize()
 	spawnPlantRandom() # Replace with function body.
 	var leftColor=[2,2,2,2,2,2,2]

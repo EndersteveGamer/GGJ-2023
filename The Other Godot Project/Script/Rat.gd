@@ -27,6 +27,8 @@ var plantAnimation=preload("res://Sprite/plant.png")
 var uprootSound=preload("res://Sound/uproot.ogg")
 var plantSound=preload("res://Sound/plant.ogg")
 
+var previousTouched=-1
+
 onready var sounder=$Sounder
 var index=0
 
@@ -49,6 +51,22 @@ func plantGetCloser(grown=false):
 			return second
 		return touched
 	return null
+	
+func selectedLoop():
+	if uproot!=null:
+		if previousTouched==-1:
+			previousTouched=index
+		if index!=previousTouched:
+			if owner.gridGet(index)==null:
+				owner.soilNode[previousTouched].modulate=owner.getSinColorCode(owner.soilColor[previousTouched])
+				owner.soilNode[previousTouched].modulate.a=0.5
+				owner.soilNode[index].modulate=Color(1.5,1.5,1.5,0.5)
+			previousTouched=index
+	else:
+		if previousTouched!=-1:
+			owner.soilNode[previousTouched].modulate=owner.getSinColorCode(owner.soilColor[previousTouched])
+			owner.soilNode[previousTouched].modulate.a=0.5
+			previousTouched=-1
 
 # The closest plant will be grabed
 # Skipped if the rat already have a plant
@@ -290,6 +308,7 @@ func _physics_process(delta):
 		position.x=terrainMin
 	if position.x>terrainMax:
 		position.x=terrainMax
+	selectedLoop()
 
 func _on_Grab_area_entered(area):
 	if area.visible:
