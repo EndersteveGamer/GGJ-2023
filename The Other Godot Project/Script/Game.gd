@@ -38,10 +38,10 @@ onready var sounder=$Sounder
 var plantSpawnSound=preload("res://Sound/plantSpawn.ogg")
 onready var rng=RandomNumberGenerator.new()
 
-export var plantSpawndBase=6
-var plantSpawnCurrent=plantSpawndBase
+export var plantSpawnedBase=6
+var plantSpawnCurrent=plantSpawnedBase
 export(float) var plantSpawnIncrement=1
-export(float) var plantSpawnDecrement=2
+export(float) var plantSpawnDecrement=1.5
 export var plantSpawnTimer=0
 
 
