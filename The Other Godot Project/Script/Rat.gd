@@ -16,7 +16,7 @@ var uprooting=0
 export var timeToUproot=0.7
 var planting=0
 export var timeToPlant=0.5
-
+var previousFrame=0
 var inHand=false
 
 var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
@@ -149,10 +149,10 @@ func playerMovement(delta):
 
 	# Move plant based on orientation
 	if facing:
-		grabbed.position.x = 32
+		# grabbed.position.x = 32
 		grabbed.flip_h = true
 	else:
-		grabbed.position.x = -32
+		# grabbed.position.x = -32
 		grabbed.flip_h = false
 
 	# Move Rat
@@ -173,11 +173,17 @@ func playerUproot(delta):
 		uprooting=0
 		sprite.texture=idle
 		sprite.hframes=6
-		animator.play("idle")
+		if facing:
+			animator.play("idle")
+		else:
+			animator.play("idle_flip")
 	else:
 		sprite.texture=uprootAnimation
 		sprite.hframes=6
-		animator.play("uproot")
+		if facing:
+			animator.play("uproot")
+		else:
+			animator.play("uproot_flip")
 		if uprooting>0.5:
 			if !inHand:
 				owner.getDirtBury().position = uproot.position
@@ -223,7 +229,10 @@ func playerPlant(delta):
 		planting=0
 		sprite.texture=idle
 		sprite.hframes=6
-		animator.play("idle")
+		if facing:
+			animator.play("idle")
+		else:
+			animator.play("idle_flip")
 		if uproot.grown:
 				owner.tiles+=1
 				if index==owner.start:
@@ -337,7 +346,10 @@ func playerPlant(delta):
 	else:
 		sprite.texture=plantAnimation
 		sprite.hframes=5
-		animator.play("plant")
+		if facing:
+			animator.play("plant")
+		else:
+			animator.play("plant_flip")
 
 
 func _physics_process(delta):
@@ -357,11 +369,17 @@ func _physics_process(delta):
 			if abs(deltaSpeed.x)>0.1:
 				sprite.texture=run
 				sprite.hframes=9
-				animator.play("run")
+				if facing:
+					animator.play("run")
+				else:
+					animator.play("run_flip")
 			else:
 				sprite.texture=idle
 				sprite.hframes=6
-				animator.play("idle")
+				if facing:
+					animator.play("idle")
+				else:
+					animator.play("idle_flip")
 			playerMovement(delta)
 	var terrainMin=owner.start*owner.gridWidth
 	var terrainMax=(owner.start+owner.tiles-1)*owner.gridWidth
@@ -371,6 +389,11 @@ func _physics_process(delta):
 		if position.x>terrainMax:
 			position.x=terrainMax
 	selectedLoop()
+#	if previousFrame!=sprite.frame:
+#		previousFrame=sprite.frame
+#		print("==========="+str(animator.current_animation))
+#		print(str(sprite.frame))
+#		print(str(grabbed.position.x))
 
 func _on_Grab_area_entered(area):
 	if area.visible:

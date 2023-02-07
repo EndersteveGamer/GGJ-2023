@@ -8,7 +8,8 @@ var texts : Array = ["Why are you even playing this",
 					"AAAAAAAAAAAAH",
 					"Pixel art go brrrrr",
 					"You'll hate these plants",
-					"Trigger warning: stupid game"]
+					"Trigger warning: stupid game",
+					"Nobody expects the spanish inquisition !"]
 var selectedText : String = ""
 
 func _ready():
