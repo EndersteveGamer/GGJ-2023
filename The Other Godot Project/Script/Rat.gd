@@ -30,6 +30,7 @@ var plantSound=preload("res://Sound/plant.ogg")
 var wooshSound=preload("res://Sound/woosh.ogg")
 var wooshSmallSound=preload("res://Sound/woosh_small.ogg")
 var tileGrowSound=preload("res://Sound/tilegrow.ogg")
+var fruitPickSound=preload("res://Sound/fruitPick.ogg")
 
 var previousTouched=-1
 
@@ -159,6 +160,9 @@ func grab():
 					touched=second
 				else:
 					second=null
+				if sounder.stream!=fruitPickSound:
+					sounder.stream=fruitPickSound
+					sounder.play()
 
 func plant():
 	if uproot!=null:
