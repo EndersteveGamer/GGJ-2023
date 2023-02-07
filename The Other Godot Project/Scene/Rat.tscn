@@ -462,6 +462,7 @@ anims/uproot = SubResource( 4 )
 anims/uproot_flip = SubResource( 9 )
 
 [node name="Indicator" type="Sprite" parent="."]
+visible = false
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 3 )
 
