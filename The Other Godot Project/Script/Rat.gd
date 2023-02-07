@@ -26,6 +26,8 @@ var uprootAnimation=preload("res://Sprite/uproot.png")
 var plantAnimation=preload("res://Sprite/plant.png")
 var uprootSound=preload("res://Sound/uproot.ogg")
 var plantSound=preload("res://Sound/plant.ogg")
+var wooshSound=preload("res://Sound/woosh.ogg")
+var wooshSmallSound=preload("res://Sound/woosh_small.ogg")
 
 var previousTouched=-1
 
@@ -199,6 +201,16 @@ func playerUproot(delta):
 func playerPlant(delta):
 	planting+=delta
 	deltaSpeed.x*=deceleration
+	if planting>0.3:
+		if uproot.grown:
+			if sounder.stream!=wooshSmallSound:
+				sounder.stream=wooshSmallSound
+				sounder.play()
+	if planting>0.2:
+		if not uproot.grown:
+			if sounder.stream!=wooshSound:
+				sounder.stream=wooshSound
+				sounder.play()
 	if planting>timeToPlant:
 		# the plant is back in the ground
 		inHand=false
@@ -231,7 +243,6 @@ func playerPlant(delta):
 							if owner.grid[i]!=null:
 								if not owner.grid[i].grown:
 									owner.grid[i].growth+2
-				uproot.sounder.stream=null
 				uproot.queue_free()
 				uproot=null
 				grabbed.texture=null
@@ -257,17 +268,15 @@ func playerPlant(delta):
 			uproot.set_owner(owner)
 			uproot.get_node("AnimationPlayer").play("sleep")
 			uproot.cry=0
+			uproot.crying=false
 			uproot.decay=0
 			uproot.death=0
 			if uproot.crying:
-				print("rat plant was crying")
 				uproot.crying=false
 			uproot.sounder.stop()
 			uproot.dying=false
 			owner.gridSet(index,uproot)
-			print("player index is "+str(index))
 			uproot.index=index
-			print("new index is "+str(uproot.index))
 			assert(uproot.index!=-1)
 			owner.gridStick(uproot)
 			grabbed.texture=null

@@ -198,7 +198,7 @@ func createPlant(x):
 		newPlant.position.y=plantedHeight
 		newPlant.color=rng.randi()%7
 		while newPlant.color==soilColor[x]:
-			newPlant.color=rng.randi()%7	
+			newPlant.color=rng.randi()%7
 		newPlant.sprite.texture=sins[sinsIndex[newPlant.color]]["texture"]
 		newPlant.sounder.stream=sins[sinsIndex[newPlant.color]]["sound"]
 		newPlant.sounder.bus="master"

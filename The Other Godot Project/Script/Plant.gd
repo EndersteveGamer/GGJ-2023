@@ -38,15 +38,12 @@ func _process(delta):
 		if not grown:
 			if soil:
 				if crying:
-					print('crying 3 set to false')
 					crying=false
 				cry=0
 				dying=false
 				death=0
 				decay=0
 				assert(index!=-1)
-				if pleaseStopBeingRetarded:
-					print("retared 3 is now false")
 				pleaseStopBeingRetarded=false
 				var plant1 = game.grid[index - 1]
 				var plant2 = game.grid[index + 1]
@@ -67,14 +64,14 @@ func _process(delta):
 					fruit.texture=fruitSprite
 					fruit.modulate=game.getSinColorCode(color)
 					fruit.z_index = -1
-				if plantGetSinName()=="lust":
-					if index>game.start and index<game.start+game.tiles-1:
-						if game.grid[index-1]==null:
-							if game.grid[index+1]!=null:
-								game.createPlant(index-1).color=game.grid[index+1].color
-						else:
-							if game.grid[index-1]!=null:
-								game.createPlant(index+1).color=game.grid[index-1].color
+					if plantGetSinName()=="lust":
+						if index>game.start and index<game.start+game.tiles-1:
+							if game.grid[index-1]==null:
+								if game.grid[index+1]!=null:
+									game.createPlant(index-1).color=game.grid[index+1].color
+							else:
+								if game.grid[index-1]!=null:
+									game.createPlant(index+1).color=game.grid[index-1].color
 				if plantGetSinName()=="sloth":
 					growth+=delta/2
 					if game.grid[index-1]!=null:
@@ -85,20 +82,19 @@ func _process(delta):
 				assert(not soil)
 				soil=false
 				if not crying:
-					cry+=delta
+					# print("index "+str(index)+" cry to "+str(cry)+"/"+str(timeToCry))
 					if cry>timeToCry:
 						cry=0
-						print("crying "+str(crying))
 						if not crying:
 							if not pleaseStopBeingRetarded:
 								if not sounder.is_playing():
-									print("play "+str(index))
 									sounder.play()
 							pleaseStopBeingRetarded=true
-							print("retared is now "+str(pleaseStopBeingRetarded))
 						crying=true
-						print("then crying "+str(crying))
+					else:
+						cry+=delta
 				else:
+					cry=0
 					position.x=(game.rng.randi()%10)-5
 					position.y=(game.rng.randi()%10)-5
 					if not dying:
@@ -121,25 +117,19 @@ func _process(delta):
 				sounder.volume_db=0
 				$AnimationPlayer.play("sleep")
 				cry=0
-				if sounder.playing:
-					print("stop")
 				sounder.stop()
-				if crying:
-					print("crying 2 set to false")
 				crying=false
-				if pleaseStopBeingRetarded:
-					print("retared 2 is now false")
 				pleaseStopBeingRetarded=false
 				death=0
 				dying=false
-				growth-=decay*2
-				if growth<0:
-					growth=0
+				if not grown:
+					growth-=decay*2
+					if growth<0:
+						growth=0
 				decay=0
 		else:
-			if sounder.is_playing():
-				print("stop 2")
-				sounder.stop()
-
+			if sounder!=null:
+				sounder.queue_free()
+				sounder=null
 func _ready():
 	pass # Replace with function body.
