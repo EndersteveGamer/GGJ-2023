@@ -35,6 +35,7 @@ func _process(delta):
 	if not dead:
 		if not grown:
 			if soil:
+				sounder.stop()
 				var plant1 = game.grid[index - 1]
 				var plant2 = game.grid[index + 1]
 				if (plant1 != null && plant1.plantGetSinName() == "wrath") || (plant2 != null && plant2.plantGetSinName() == "wrath"):

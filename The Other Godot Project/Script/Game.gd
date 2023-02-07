@@ -36,10 +36,10 @@ onready var progressDisplay = $CanvasLayer/TextureProgress
 onready var musicer=$Musicer
 onready var rng=RandomNumberGenerator.new()
 
-export var plantSpawndBase=20
+export var plantSpawndBase=6
 var plantSpawnCurrent=plantSpawndBase
 export(float) var plantSpawnIncrement=1
-export(float) var plantSpawnDecrement=1
+export(float) var plantSpawnDecrement=2
 export var plantSpawnTimer=0
 
 var timeTaken = 0
@@ -260,6 +260,7 @@ func _process(delta):
 			spawnPlantRandom()
 		plantSpawnTimer-=plantSpawnCurrent
 		plantSpawnCurrent+=plantSpawnIncrement
+		print(plantSpawnCurrent)
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
 	progressDisplay.value = tiles - 14
 	if timeLeftToShake > 0:

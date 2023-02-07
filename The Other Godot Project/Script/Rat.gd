@@ -230,6 +230,7 @@ func playerPlant(delta):
 				uproot=null
 				grabbed.texture=null
 				owner.plantSpawnCurrent-=owner.plantSpawnDecrement
+				print(owner.plantSpawnCurrent)
 				var tiles=owner.tiles-owner.startingTiles
 				var thirdVictory=(owner.victory-owner.startingTiles)/3
 				if tiles>thirdVictory:
@@ -331,7 +332,6 @@ func _on_Grab_area_entered(area):
 	if area.visible:
 		if touched==null:
 			touched=area
-			print("set")
 			touched.sprite.modulate=Color(1.25,1.25,1.25)
 		else:
 			if second==null and area!=touched:
