@@ -28,6 +28,7 @@ var uprootSound=preload("res://Sound/uproot.ogg")
 var plantSound=preload("res://Sound/plant.ogg")
 var wooshSound=preload("res://Sound/woosh.ogg")
 var wooshSmallSound=preload("res://Sound/woosh_small.ogg")
+var tileGrowSound=preload("res://Sound/tilegrow.ogg")
 
 var previousTouched=-1
 
@@ -259,6 +260,8 @@ func playerPlant(delta):
 						var from=owner.musicer.get_playback_position()
 						owner.musicer.stream=owner.music[2]
 						owner.musicer.play(from)
+				sounder.stream=tileGrowSound
+				sounder.play()
 				if owner.tiles >= owner.victory:
 					owner.endGame()
 				return
