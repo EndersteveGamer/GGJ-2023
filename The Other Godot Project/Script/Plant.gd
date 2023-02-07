@@ -19,7 +19,7 @@ export var timeToDecay=5
 export var timeToCry=2
 export var timeToDie=5
 
-var soundCry=preload("res://Sound/Scream.ogg")
+var growSound=preload("res://Sound/fruitSpawn.ogg")
 var fruitSprite=preload("res://Sprite/Other Fruit of the 80s.png")
 onready var sprite=get_node("Sprite")
 onready var fruit=get_node("Fruit")
@@ -58,7 +58,8 @@ func _process(delta):
 					if (plant1 != null && plant1.growth > growth) || (plant2 != null && plant2.growth > growth):
 						growth += delta
 				if growth>=timeToGrow:
-					sounder.stop()
+					sounder.stream=growSound
+					sounder.play()
 					grown=true
 					growth=timeToGrow
 					fruit.texture=fruitSprite
@@ -117,7 +118,8 @@ func _process(delta):
 				sounder.volume_db=0
 				$AnimationPlayer.play("sleep")
 				cry=0
-				sounder.stop()
+				if sounder.stream!=growSound:
+					sounder.stop()
 				crying=false
 				pleaseStopBeingRetarded=false
 				death=0
@@ -128,8 +130,7 @@ func _process(delta):
 						growth=0
 				decay=0
 		else:
-			if sounder!=null:
-				sounder.queue_free()
-				sounder=null
+			if sounder.stream!=growSound:
+				sounder.stop()
 func _ready():
 	pass # Replace with function body.

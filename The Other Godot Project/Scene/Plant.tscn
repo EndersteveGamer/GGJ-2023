@@ -55,7 +55,7 @@ hframes = 4
 shape = SubResource( 1 )
 
 [node name="Fruit" type="Sprite" parent="."]
-position = Vector2( 0, -16 )
+position = Vector2( 0, -32 )
 scale = Vector2( 2, 2 )
 z_index = 1
 

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/fruitSpawn.ogg-b8c088dc9fa25e6ddbfb2f2fa6cdee24.oggstr"
+
+[deps]
+
+source_file="res://Sound/fruitSpawn.ogg"
+dest_files=[ "res://.import/fruitSpawn.ogg-b8c088dc9fa25e6ddbfb2f2fa6cdee24.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

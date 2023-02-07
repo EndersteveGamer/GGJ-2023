@@ -276,7 +276,7 @@ func playerPlant(delta):
 			uproot.death=0
 			if uproot.crying:
 				uproot.crying=false
-			uproot.sounder.stop()
+			# uproot.sounder.stop()
 			uproot.dying=false
 			owner.gridSet(index,uproot)
 			uproot.index=index
@@ -288,6 +288,9 @@ func playerPlant(delta):
 			owner.getDirtBury().emitting = true
 			
 			uproot.generator.emitting=false
+			
+			if uproot.sounder.stream!=uproot.growSound:
+				uproot.sounder.stop()
 			
 			if plantGetSinName(uproot)=="gluttony":
 				if not uproot.grown:
