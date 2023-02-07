@@ -38,6 +38,7 @@ func _process(delta):
 		if not grown:
 			if soil:
 				if crying:
+					sounder.stop()
 					crying=false
 				cry=0
 				dying=false

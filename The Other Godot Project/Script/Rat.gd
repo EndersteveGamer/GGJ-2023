@@ -58,14 +58,15 @@ func plantGetCloser(grown=false):
 	return null
 
 func arrowMove(x,down=false):
-	arrow.get_parent().remove_child(arrow)
-	owner.soilNode[x].add_child(arrow)
-	arrow.flip_v=down
-	arrow.position.x=0
-	arrow.position.y=-64
-	arrow.z_index=42
-	arrow.visible=true
-	arrow.scale=Vector2(0.25,0.25)
+	if owner.soilNode[x]!=null:
+		arrow.get_parent().remove_child(arrow)
+		owner.soilNode[x].add_child(arrow)
+		arrow.flip_v=down
+		arrow.position.x=0
+		arrow.position.y=-64
+		arrow.z_index=42
+		arrow.visible=true
+		arrow.scale=Vector2(0.25,0.25)
 
 func arrowReset():
 	arrow.get_parent().remove_child(arrow)
