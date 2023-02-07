@@ -77,6 +77,7 @@ func arrowReset():
 
 func selectedLoop():
 	if uproot!=null:
+		uproot.sprite.modulate=Color(1,1,1)
 		if not uproot.grown:
 			if previousTouched==-1:
 				previousTouched=index
