@@ -8,6 +8,7 @@ onready var sprite=get_node("Sprite")
 onready var grabbed=get_node("Grab").get_node("Grabbed")
 onready var audioManager=owner.get_node("AudioManager")
 onready var animator=get_node("AnimationPlayer")
+onready var arrow=get_node("Indicator")
 
 var touched=null #the plant the rat touches right now
 var second=null #the second plant it touches
@@ -54,23 +55,43 @@ func plantGetCloser(grown=false):
 			return second
 		return touched
 	return null
-	
+
+func arrowMove(x,down=false):
+	arrow.get_parent().remove_child(arrow)
+	owner.soilNode[x].add_child(arrow)
+	arrow.flip_v=down
+	arrow.position.y=-64
+	arrow.z_index=42
+	arrow.visible=true
+
+func arrowReset():
+	arrow.get_parent().remove_child(arrow)
+	add_child(arrow)
+	arrow.visible=false
+
 func selectedLoop():
 	if uproot!=null:
-		if previousTouched==-1:
-			previousTouched=index
-			owner.soilNode[previousTouched].modulate.a=0.75
-		if index!=previousTouched:
-			if owner.gridGet(index)==null:
-				owner.soilNode[previousTouched].modulate.a=0.5
-				owner.soilNode[index].modulate.a=0.75
-			previousTouched=index
+		if not uproot.grown:
+			if previousTouched==-1:
+				previousTouched=index
+				owner.soilNode[previousTouched].modulate.a=0.75
+			if index!=previousTouched:
+				if owner.gridGet(index)==null:
+					owner.soilNode[previousTouched].modulate.a=0.5
+					owner.soilNode[index].modulate.a=0.75
+					arrowMove(index,true)
+				previousTouched=index
 	else:
 		if previousTouched!=-1:
 			owner.soilNode[previousTouched].modulate.a=0.5
 		for i in range(owner.start,owner.start+owner.tiles-1):
 			if owner.soilNode[i]!=null:
 				owner.soilNode[i].modulate.a=0.5
+		if touched!=null:
+			arrowMove(touched.index)
+		else:
+			if arrow.get_parent()!=self:
+				arrowReset()
 			# previousTouched=-1
 #		if touched!=null:
 #			if previousTouched==-1:
@@ -93,6 +114,7 @@ func grab():
 	if uproot==null:
 		uproot=plantGetCloser()
 		if uproot!=null:
+			arrowReset()
 			grabbed.modulate=Color(1,1,1,1)
 			grabbed.scale=Vector2(1,1)
 			if uprooting==0:
@@ -106,6 +128,7 @@ func grab():
 		else:
 			uproot=plantGetCloser(true)
 			if uproot!=null:
+				arrowReset()
 				grabbed.texture=fruitSprite
 				grabbed.modulate=owner.getSin(uproot.color)["color"]
 				grabbed.scale=Vector2(2,2)
@@ -120,6 +143,7 @@ func grab():
 
 func plant():
 	if uproot!=null:
+		arrowReset()
 		if uproot.grown:
 			if index==owner.start or index==owner.start+owner.tiles-1:
 				planting=0.01
