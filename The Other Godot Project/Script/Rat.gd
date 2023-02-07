@@ -65,6 +65,9 @@ func selectedLoop():
 	else:
 		if previousTouched!=-1:
 			owner.soilNode[previousTouched].modulate.a=0.5
+		for i in range(owner.start,owner.start+owner.tiles-1):
+			if owner.soilNode[i]!=null:
+				owner.soilNode[i].modulate.a=0.5
 			# previousTouched=-1
 #		if touched!=null:
 #			if previousTouched==-1:
@@ -91,6 +94,7 @@ func grab():
 			grabbed.scale=Vector2(1,1)
 			if uprooting==0:
 				uprooting=0.001
+				uproot.soil=false
 				inHand=false
 				if touched==uproot:
 					touched=second
@@ -208,7 +212,6 @@ func playerPlant(delta):
 		sprite.hframes=6
 		animator.play("idle")
 		if uproot.grown:
-				uproot.call_deferred("queue_free")
 				owner.tiles+=1
 				if index==owner.start:
 					owner.start-=1
@@ -226,11 +229,13 @@ func playerPlant(delta):
 					for i in range(owner.start,owner.start+owner.tiles-1):
 						if owner.soilColor[i]!=uproot.color:
 							if owner.grid[i]!=null:
-								owner.grid[i].growth+2
+								if not owner.grid[i].grown:
+									owner.grid[i].growth+2
+				uproot.sounder.stream=null
+				uproot.queue_free()
 				uproot=null
 				grabbed.texture=null
 				owner.plantSpawnCurrent-=owner.plantSpawnDecrement
-				print(owner.plantSpawnCurrent)
 				var tiles=owner.tiles-owner.startingTiles
 				var thirdVictory=(owner.victory-owner.startingTiles)/3
 				if tiles>thirdVictory:
@@ -251,7 +256,19 @@ func playerPlant(delta):
 			owner.add_child(uproot)
 			uproot.set_owner(owner)
 			uproot.get_node("AnimationPlayer").play("sleep")
+			uproot.cry=0
+			uproot.decay=0
+			uproot.death=0
+			if uproot.crying:
+				print("rat plant was crying")
+				uproot.crying=false
+			uproot.sounder.stop()
+			uproot.dying=false
 			owner.gridSet(index,uproot)
+			print("player index is "+str(index))
+			uproot.index=index
+			print("new index is "+str(uproot.index))
+			assert(uproot.index!=-1)
 			owner.gridStick(uproot)
 			grabbed.texture=null
 			
@@ -272,23 +289,33 @@ func playerPlant(delta):
 						if sum>steal:
 							steal=sum
 						uproot.growth+=steal
-						previous.growth-=steal/2
-						if previous.growth<0:
-							steal-=previous.growth
-							previous.growth=0
-						next.growth-=steal
+						if previous!=null:
+							previous.growth-=steal/2
+							if not previous.grown:
+								if previous.growth<0:
+									steal-=previous.growth
+									previous.growth=0
+						if next!=null:
+							if not next.grown:
+								next.growth-=steal
 					else:
 						if previous==null:
 							previous=next
 						if previous!=null:
-							previous.growth-=steal
-							if previous.growth<0:
-								steal=-previous.growth
-								previous.growth=0
-							uproot.growth+=steal
+							if not previous.grown:
+								previous.growth-=steal
+								if previous.growth<0:
+									steal=-previous.growth
+									previous.growth=0
+								uproot.growth+=steal
 			if owner.soilColor[uproot.index]==uproot.color:
 				uproot.soil=true
+			if second==uproot:
+				second=null
+			if touched!=null:
+				touched.sprite.modulate=Color(1,1,1)
 			touched=uproot
+			uproot.sprite.modulate=Color(1.25,1.25,1.25)
 			uproot=null
 			sounder.stream=plantSound
 			sounder.play()
@@ -296,6 +323,7 @@ func playerPlant(delta):
 		sprite.texture=plantAnimation
 		sprite.hframes=5
 		animator.play("plant")
+
 
 func _physics_process(delta):
 	if uproot!=null:
@@ -324,8 +352,9 @@ func _physics_process(delta):
 	var terrainMax=(owner.start+owner.tiles-1)*owner.gridWidth
 	if position.x<terrainMin:
 		position.x=terrainMin
-	if position.x>terrainMax:
-		position.x=terrainMax
+	else:
+		if position.x>terrainMax:
+			position.x=terrainMax
 	selectedLoop()
 
 func _on_Grab_area_entered(area):
@@ -342,8 +371,8 @@ func _on_Grab_area_exited(area):
 		if area==touched:
 			touched.sprite.modulate=Color(1,1,1)
 			touched=second
-			if second!=null:
-				second.sprite.modulate=Color(1.25,1.25,1.25)
+			if touched!=null:
+				touched.sprite.modulate=Color(1.25,1.25,1.25)
 			second=null
 			return
 		if area==second:

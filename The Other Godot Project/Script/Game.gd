@@ -260,7 +260,6 @@ func _process(delta):
 			spawnPlantRandom()
 		plantSpawnTimer-=plantSpawnCurrent
 		plantSpawnCurrent+=plantSpawnIncrement
-		print(plantSpawnCurrent)
 		if plantSpawnCurrent < 3: plantSpawnCurrent = 3
 	progressDisplay.value = tiles - 14
 	if timeLeftToShake > 0:

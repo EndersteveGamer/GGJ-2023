@@ -4,7 +4,7 @@
 [ext_resource path="res://Script/Plant.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 32 )
+extents = Vector2( 24, 24 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "cry"
@@ -52,7 +52,6 @@ z_index = -1
 hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -0.5 )
 shape = SubResource( 1 )
 
 [node name="Fruit" type="Sprite" parent="."]

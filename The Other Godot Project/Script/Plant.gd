@@ -25,6 +25,8 @@ onready var sprite=get_node("Sprite")
 onready var fruit=get_node("Fruit")
 onready var game=owner
 
+var pleaseStopBeingRetarded=false
+
 func plantGetSinName():
 	return game.sinsIndex[color]
 
@@ -35,7 +37,17 @@ func _process(delta):
 	if not dead:
 		if not grown:
 			if soil:
-				sounder.stop()
+				if crying:
+					print('crying 3 set to false')
+					crying=false
+				cry=0
+				dying=false
+				death=0
+				decay=0
+				assert(index!=-1)
+				if pleaseStopBeingRetarded:
+					print("retared 3 is now false")
+				pleaseStopBeingRetarded=false
 				var plant1 = game.grid[index - 1]
 				var plant2 = game.grid[index + 1]
 				if (plant1 != null && plant1.plantGetSinName() == "wrath") || (plant2 != null && plant2.plantGetSinName() == "wrath"):
@@ -49,6 +61,7 @@ func _process(delta):
 					if (plant1 != null && plant1.growth > growth) || (plant2 != null && plant2.growth > growth):
 						growth += delta
 				if growth>=timeToGrow:
+					sounder.stop()
 					grown=true
 					growth=timeToGrow
 					fruit.texture=fruitSprite
@@ -64,16 +77,27 @@ func _process(delta):
 								game.createPlant(index+1).color=game.grid[index-1].color
 				if plantGetSinName()=="sloth":
 					growth+=delta/2
-					if game.grid[index-1]!=null :
+					if game.grid[index-1]!=null:
 							growth-=delta/4
-					if game.grid[index+1]!=null :
+					if game.grid[index+1]!=null:
 							growth-=delta/4
 			if index==-1:
+				assert(not soil)
+				soil=false
 				if not crying:
 					cry+=delta
 					if cry>timeToCry:
+						cry=0
+						print("crying "+str(crying))
+						if not crying:
+							if not pleaseStopBeingRetarded:
+								if not sounder.is_playing():
+									print("play "+str(index))
+									sounder.play()
+							pleaseStopBeingRetarded=true
+							print("retared is now "+str(pleaseStopBeingRetarded))
 						crying=true
-						sounder.play()
+						print("then crying "+str(crying))
 				else:
 					position.x=(game.rng.randi()%10)-5
 					position.y=(game.rng.randi()%10)-5
@@ -97,14 +121,25 @@ func _process(delta):
 				sounder.volume_db=0
 				$AnimationPlayer.play("sleep")
 				cry=0
+				if sounder.playing:
+					print("stop")
 				sounder.stop()
+				if crying:
+					print("crying 2 set to false")
 				crying=false
+				if pleaseStopBeingRetarded:
+					print("retared 2 is now false")
+				pleaseStopBeingRetarded=false
 				death=0
 				dying=false
-				growth-=decay
+				growth-=decay*2
 				if growth<0:
 					growth=0
 				decay=0
+		else:
+			if sounder.is_playing():
+				print("stop 2")
+				sounder.stop()
 
 func _ready():
 	pass # Replace with function body.

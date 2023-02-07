@@ -11,5 +11,5 @@ dest_files=[ "res://.import/wrath.ogg-b41dc3c626d6935b76277c79c1a71d5f.oggstr" ]
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
