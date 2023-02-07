@@ -34,6 +34,8 @@ var music=[preload("res://Sound/level 1.ogg"),preload("res://Sound/level 2.ogg")
 
 onready var progressDisplay = $CanvasLayer/TextureProgress
 onready var musicer=$Musicer
+onready var sounder=$Sounder
+var plantSpawnSound=preload("res://Sound/plantSpawn.ogg")
 onready var rng=RandomNumberGenerator.new()
 
 export var plantSpawndBase=6
@@ -41,6 +43,7 @@ var plantSpawnCurrent=plantSpawndBase
 export(float) var plantSpawnIncrement=1
 export(float) var plantSpawnDecrement=2
 export var plantSpawnTimer=0
+
 
 var timeTaken = 0
 
@@ -193,6 +196,7 @@ func createPlant(x):
 		var newPlant=plant.instance()
 		add_child(newPlant)
 		newPlant.owner=self
+		newPlant.owner=self
 		newPlant.game=self
 		gridSet(x,newPlant)
 		newPlant.position.y=plantedHeight
@@ -205,6 +209,8 @@ func createPlant(x):
 		newPlant.generator=plantDecay.duplicate()
 		newPlant.add_child(newPlant.generator)
 		newPlant.generator.emitting=false
+		sounder.stream=plantSpawnSound
+		sounder.play()
 		return newPlant
 	return null
 

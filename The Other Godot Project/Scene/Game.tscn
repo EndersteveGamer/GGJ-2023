@@ -133,3 +133,5 @@ margin_right = 1408.0
 value = 1.0
 
 [node name="Musicer" type="AudioStreamPlayer" parent="."]
+
+[node name="Sounder" type="AudioStreamPlayer" parent="."]

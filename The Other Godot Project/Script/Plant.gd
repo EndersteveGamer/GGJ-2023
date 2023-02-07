@@ -132,5 +132,3 @@ func _process(delta):
 		else:
 			if sounder.stream!=growSound:
 				sounder.stop()
-func _ready():
-	pass # Replace with function body.
